@@ -332,26 +332,28 @@ function EarlyAccessSection() {
             We&apos;ll be in touch. Watch your inbox.
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 rounded-md border border-white/15 bg-white/5 text-white placeholder-white/30 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-[#D85A30] text-white px-6 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 whitespace-nowrap"
-            >
-              {loading ? "Sending…" : "Request Access"}
-            </button>
-          </form>
-          {error && (
-            <p className="mt-4 text-sm text-red-400">{error}</p>
-          )}
+          <>
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="flex-1 rounded-md border border-white/15 bg-white/5 text-white placeholder-white/30 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-[#D85A30] text-white px-6 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 whitespace-nowrap"
+              >
+                {loading ? "Sending…" : "Request Access"}
+              </button>
+            </form>
+            {error && (
+              <p className="mt-4 text-sm text-red-400">{error}</p>
+            )}
+          </>
         )}
       </div>
     </section>
