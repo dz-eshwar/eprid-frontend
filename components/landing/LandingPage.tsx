@@ -295,22 +295,25 @@ function EarlyAccessSection() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);
+    setError(null);
     try {
-      await fetch("/api/waitlist", {
+      const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim() }),
       });
+      if (!res.ok) throw new Error("Request failed");
+      setSubmitted(true);
     } catch {
-      // endpoint may not exist yet — show success regardless
+      setError("Something went wrong. Email us directly: sake.winz@gmail.com");
     } finally {
       setLoading(false);
-      setSubmitted(true);
     }
   }
 
@@ -346,6 +349,9 @@ function EarlyAccessSection() {
               {loading ? "Sending…" : "Request Access"}
             </button>
           </form>
+          {error && (
+            <p className="mt-4 text-sm text-red-400">{error}</p>
+          )}
         )}
       </div>
     </section>
