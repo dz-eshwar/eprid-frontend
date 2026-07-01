@@ -19,9 +19,7 @@ export function Navbar() {
     <nav className="bg-[#0F6E56] text-white px-6 py-4 flex items-center justify-between shadow-sm">
       <Link href="/" className="flex items-center gap-2">
         <EPRidMark size={28} color="#ffffff" />
-        <span className="text-xl font-bold tracking-tight">
-          EPR<span className="text-[#D85A30]">I</span>d
-        </span>
+        <span className="text-xl font-bold tracking-tight">EPRId</span>
         <span className="hidden sm:inline text-sm font-normal opacity-75">
           Battery EPR Verification
         </span>
