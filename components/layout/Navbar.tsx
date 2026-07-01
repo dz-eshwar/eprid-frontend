@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LogOut, User } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthContext";
+import { EPRidMark } from "@/components/branding/EPRidLogo";
 
 export function Navbar() {
   const { user, clearAuth } = useAuth();
@@ -17,7 +18,10 @@ export function Navbar() {
   return (
     <nav className="bg-[#0F6E56] text-white px-6 py-4 flex items-center justify-between shadow-sm">
       <Link href="/" className="flex items-center gap-2">
-        <span className="text-xl font-bold tracking-tight">E-PRid</span>
+        <EPRidMark size={28} color="#ffffff" />
+        <span className="text-xl font-bold tracking-tight">
+          EPR<span className="text-[#D85A30]">I</span>d
+        </span>
         <span className="hidden sm:inline text-sm font-normal opacity-75">
           Battery EPR Verification
         </span>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 64" width="340" height="64" role="img" aria-label="E-PRid logo">
+  <defs>
+    
+  </defs>
+  
+  <g transform="translate(0, 6) scale(1.083)">
+    <rect x="9" y="9" width="6" height="30" rx="1.5" fill="#0F6E56"></rect>
+    <rect x="17" y="9" width="22" height="6.5" rx="1.5" fill="#0F6E56"></rect>
+    <rect x="17" y="20.75" width="15" height="6.5" rx="1.5" fill="#0F6E56"></rect>
+    <rect x="17" y="32.5" width="22" height="6.5" rx="1.5" fill="#0F6E56"></rect>
+  </g>
+  
+  <rect x="70" y="10" width="1" height="44" rx="0.5" fill="#374151" opacity="0.15"></rect>
+  
+  
+  <rect x="82" y="10" width="8.5" height="44" rx="1.5" fill="#374151"></rect>
+  <rect x="90.5" y="10" width="19" height="7.5" rx="1.5" fill="#374151"></rect>
+  <rect x="90.5" y="47.5" width="19" height="7.5" rx="1.5" fill="#374151"></rect>
+  <rect x="93.5" y="27.5" width="14" height="7.5" rx="1.5" fill="#374151"></rect>
+  
+  <text x="113" y="51" font-family="&#39;IBM Plex Sans&#39;, Helvetica, Arial, sans-serif" font-size="44" font-weight="600" letter-spacing="-0.02em" fill="#374151">PR</text>
+  <text x="196" y="51" font-family="&#39;IBM Plex Sans&#39;, Helvetica, Arial, sans-serif" font-size="44" font-weight="600" letter-spacing="-0.02em" fill="#D85A30">I</text>
+  <text x="210" y="51" font-family="&#39;IBM Plex Sans&#39;, Helvetica, Arial, sans-serif" font-size="44" font-weight="600" letter-spacing="-0.02em" fill="#374151">d</text>
+</svg>

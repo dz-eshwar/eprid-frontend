@@ -14,6 +14,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { EPRidMark } from "@/components/branding/EPRidLogo";
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
@@ -25,7 +26,10 @@ function LandingNavbar() {
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-[#0F6E56] tracking-tight">E-PRid</span>
+          <EPRidMark size={26} color="#0F6E56" />
+          <span className="text-xl font-bold text-[#374151] tracking-tight">
+            EPR<span className="text-[#D85A30]">I</span>d
+          </span>
           <span className="hidden sm:inline text-xs text-[#374151]/50 font-medium border-l border-black/10 pl-2">
             Battery EPR Verification
           </span>
