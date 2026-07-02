@@ -1,0 +1,291 @@
+{
+  "landing": {
+    "meta": {
+      "title": "E-PRid — Battery EPR Certificate Verification",
+      "description": "Risk scores on every recycler and certificate before you buy. Built for BWMR 2022 compliance."
+    },
+    "nav": {
+      "tagline": "Battery EPR Verification",
+      "howItWorks": "How it works",
+      "forProducers": "For Producers",
+      "forConsultancies": "For Consultancies",
+      "getEarlyAccess": "Get Early Access",
+      "toggleMenu": "Toggle menu"
+    },
+    "hero": {
+      "badge": "Built for BWMR 2022 compliance",
+      "titleLine1": "Know if your EPR certificate is real",
+      "titleLine2": "before you file.",
+      "body": "India's plastic EPR system saw ₹700Cr+ in fraudulent certificates before anyone caught it. Battery EPR is next. E-PRid gives producers, PROs, and compliance consultancies a risk score on every recycler and certificate — before they buy.",
+      "ctaPrimary": "Run a Risk Check",
+      "ctaSecondary": "See how it works",
+      "footnote": "Built for India's Battery Waste Management Rules, 2022"
+    },
+    "stats": {
+      "recyclers": { "stat": "520+", "desc": "Registered battery recyclers — with no independent verification layer" },
+      "fraud": { "stat": "₹700Cr+", "desc": "Fraudulent plastic EPR certs undetected. Battery EPR uses the same architecture." },
+      "deadline": { "stat": "June 30", "desc": "Annual return deadline — with no way to verify what you're filing" }
+    },
+    "howItWorks": {
+      "heading": "How it works",
+      "subheading": "Three checks, one report. Designed to be completed before a certificate purchase, not after.",
+      "steps": {
+        "submit": {
+          "title": "Submit recycler name or certificate ID",
+          "desc": "Enter the recycler name, BWMR registration number, and batch details you want to verify. No portal access required."
+        },
+        "checks": {
+          "title": "E-PRid runs three independent checks",
+          "desc": "Document forensics (EXIF, geotag, timestamps), capacity plausibility against public CPCB data, and regulatory history from enforcement databases."
+        },
+        "score": {
+          "title": "Risk score and downloadable report",
+          "desc": "Get a Low / Medium / High risk rating with a per-check breakdown and a PDF report you can attach to your compliance file."
+        }
+      }
+    },
+    "whoItsFor": {
+      "heading": "Who it's for",
+      "subheading": "Every participant in the EPR certificate chain has something at stake.",
+      "verifiedBadge": "Verified Recycler",
+      "audiences": {
+        "consultancies": {
+          "title": "EPR Compliance Consultancies",
+          "body": "White-label the check. Run it for every client before filing. One bad certificate can cost your client an Environmental Compensation notice — and your firm its reputation."
+        },
+        "producers": {
+          "title": "Producers & EV OEMs",
+          "body": "Your EPR obligation doesn't end at buying a certificate. If the recycler behind it is fraudulent, the liability lands on you. Verify before you file."
+        },
+        "recyclers": {
+          "title": "Recyclers",
+          "body": "Stand out from the crowd. Get a Verified Recycler badge that producers can trust — because you've passed an independent check, not just self-reported."
+        }
+      }
+    },
+    "earlyAccess": {
+      "heading": "Get early access",
+      "body": "We're onboarding a small group of compliance consultancies and producers for the pilot. No commitment — just a risk check on the recycler of your choice.",
+      "emailPlaceholder": "your@email.com",
+      "sending": "Sending…",
+      "requestAccess": "Request Access",
+      "submittedMessage": "We'll be in touch. Watch your inbox.",
+      "errorGeneric": "Something went wrong. Email us directly: sake.winz@gmail.com"
+    },
+    "footer": {
+      "title": "E-PRid — EPR Certificate Verification",
+      "subtitle": "Built for India's Battery Waste Management Rules, 2022",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "login": "Log in"
+    }
+  },
+  "nav": {
+    "tagline": "Battery EPR Verification",
+    "calculator": "Calculator",
+    "verify": "Verify",
+    "vault": "Vault",
+    "dashboard": "Dashboard",
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out",
+    "toggleMenu": "Toggle menu"
+  },
+  "language": {
+    "en": "English",
+    "hi": "हिन्दी",
+    "te": "తెలుగు"
+  },
+  "vault": {
+    "signInTitle": "Sign in to access your vault",
+    "signInBody": "The document vault is a private space for recyclers to store registration, GST, and processing receipts.",
+    "login": "Log in",
+    "signup": "Sign up",
+    "title": "Document Vault",
+    "subtitle": "Store registration, GST certificates and processing receipts in one place.",
+    "recyclerFor": "Vault for recycler",
+    "change": "Change",
+    "whichRecycler": "Which recycler is this vault for?",
+    "enterRecyclerId": "Enter the recycler ID from a previous verification check.",
+    "recyclerIdPlaceholder": "Recycler ID (UUID)",
+    "set": "Set",
+    "acceptDisclosurePrompt": "Accept the disclosure to start uploading documents.",
+    "reviewAndAccept": "Review & accept",
+    "setRecyclerIdPrompt": "Set a recycler ID above to upload documents.",
+    "setRecyclerId": "Set recycler ID",
+    "yourDocuments": "Your documents ({count})",
+    "consent": {
+      "title": "Document vault — disclosure",
+      "p1": "Documents you upload are stored for <strong>your own filing convenience</strong>. No document is shared with any third party today.",
+      "p2": "In a future product update, you may be able to use stored documents as verification evidence in an E-PRid risk check. If this capability is added, you will be informed before any document is used in that way.",
+      "p3": "By uploading, you confirm you have the right to store these documents and you accept the above terms. This acceptance is logged with a timestamp as part of the audit trail.",
+      "checkboxLabel": "I understand and accept the above disclosure.",
+      "accept": "Accept and continue"
+    },
+    "upload": {
+      "documentType": "Document type",
+      "displayName": "Display name",
+      "displayNameOptional": "(optional — defaults to filename)",
+      "displayNamePlaceholder": "e.g. BWMR Reg Cert 2024",
+      "file": "File",
+      "fileHint": "JPEG, PNG, WebP, TIFF, PDF · max 20 MB",
+      "notes": "Notes",
+      "notesOptional": "(optional)",
+      "notesPlaceholder": "Any reference notes for your own use",
+      "uploadDocument": "Upload document",
+      "cancel": "Cancel",
+      "addAnother": "Add another document",
+      "uploadFailed": "Upload failed",
+      "uploaded": "{name} uploaded",
+      "uploadTitle": "Upload a document",
+      "uploadTitleLocked": "Upload {type}",
+      "uploadedTitle": "Document uploaded"
+    },
+    "docList": {
+      "empty": "No documents uploaded yet.",
+      "uploadedOn": "Uploaded {date}",
+      "download": "Download",
+      "remove": "Remove",
+      "confirmDelete": "Remove this document from the vault?",
+      "downloadFailed": "Download failed"
+    },
+    "docTypeTable": {
+      "documentType": "Document type",
+      "uploaded": "Uploaded",
+      "cancel": "Cancel",
+      "upload": "Upload"
+    }
+  },
+  "verify": {
+    "signInTitle": "Sign in to verify a recycler",
+    "signInBody": "Verification checks are logged against your account so you have a complete due-diligence audit trail.",
+    "login": "Log in",
+    "signupFree": "Sign up — it's free",
+    "title": "Verify a Recycler",
+    "subtitle": "Evidence-backed risk check — each step is logged for your due-diligence file.",
+    "steps": {
+      "recyclerDetails": "Recycler details",
+      "uploadEvidence": "Upload evidence",
+      "results": "Results"
+    },
+    "results": {
+      "heading": "Verification results",
+      "downloadPdf": "Download PDF",
+      "batchPlausibility": "Batch plausibility",
+      "documentForensics": "Document forensics",
+      "regulatoryHistory": "Regulatory history"
+    }
+  },
+  "recyclerDetailsForm": {
+    "batchSaved": "Batch details saved",
+    "plausibilityIntro": "We ran an immediate plausibility check on the batch figures you entered. Review the results below before uploading evidence.",
+    "editDetails": "← Edit details",
+    "continueAnyway": "Continue anyway →",
+    "continueToEvidence": "Continue to evidence upload →",
+    "cardTitle": "Recycler & batch details",
+    "cardSubtitle": "Enter the recycler's details and the batch they're claiming.",
+    "sectionRecycler": "Recycler",
+    "sectionProducer": "Producer (your client)",
+    "sectionBatch": "Batch being claimed",
+    "fields": {
+      "recyclerName": "Recycler name *",
+      "recyclerNamePlaceholder": "e.g. ABC Recyclers Pvt Ltd",
+      "bwmrRegNumber": "BWMR registration number",
+      "bwmrRegNumberPlaceholder": "e.g. BWMR/2023/001",
+      "registeredState": "Registered state",
+      "selectState": "— Select state —",
+      "selfReportedCapacity": "Self-reported annual capacity (tonnes)",
+      "selfReportedCapacityPlaceholder": "e.g. 1200",
+      "producerName": "Producer name *",
+      "producerNamePlaceholder": "e.g. XYZ Battery Co",
+      "cpcbRegNumber": "CPCB registration number",
+      "cpcbRegNumberPlaceholder": "e.g. CPCB/2023/001",
+      "weightProcessed": "Weight processed (tonnes) *",
+      "weightProcessedPlaceholder": "e.g. 50.000",
+      "claimedRecoveryPct": "Claimed recovery % *",
+      "claimedRecoveryPctPlaceholder": "e.g. 75",
+      "processingDate": "Processing date *"
+    },
+    "submit": "Check batch plausibility →",
+    "createFailed": "Failed to create check"
+  },
+  "evidenceUpload": {
+    "cardTitle": "Upload evidence",
+    "cardSubtitle": "Add up to {max} files. Label each one so we apply the right date checks — a registration certificate from 2022 shouldn't be flagged just because it predates this batch.",
+    "documentTypeLabel": "Document type:",
+    "dropzoneCta": "Drag & drop files, or <link>click to browse</link>",
+    "fileTypesHint": "JPEG · PNG · WebP · TIFF · PDF",
+    "addedCount": "{count}/{max} added",
+    "unsupportedType": "\"{name}\" — unsupported type",
+    "exceedsSize": "\"{name}\" — exceeds {max} MB",
+    "addAtLeastOne": "Add at least one file",
+    "uploadFailed": "Upload failed",
+    "runForensics": "Run forensics checks ({count} {count, plural, one {file} other {files}})"
+  },
+  "forensicsResults": {
+    "heading": "Forensics complete",
+    "filesProcessed": "{count} {count, plural, one {file} other {files}} processed",
+    "passed": "{count} passed",
+    "failed": "{count} failed",
+    "unverifiable": "{count} unverifiable",
+    "checksCount": "{count} {count, plural, one {check} other {checks}}",
+    "whatDoesCheckDo": "What does \"{name}\" check?",
+    "startNewCheck": "Start a new check"
+  },
+  "plausibilityResults": {
+    "heading": "Batch plausibility check",
+    "status": {
+      "PASS": "All batch details are within plausible industry ranges.",
+      "WARN": "Some batch details are unusual — review the findings below.",
+      "FAIL": "One or more batch details appear implausible — this check has failed.",
+      "UNVERIFIABLE": "Some checks could not be verified — additional data is needed."
+    }
+  },
+  "regulatoryHistory": {
+    "heading": "Regulatory history",
+    "runCheck": "Run check",
+    "notStarted": "No regulatory research has been run yet. Click 'Run check' to start.",
+    "pending": "Researching CPCB enforcement records, NGT orders, and news…",
+    "failedStatus": "Research could not be completed — API key may not be configured.",
+    "riskHigh": "High regulatory risk — review findings.",
+    "riskMedium": "Medium regulatory risk — some findings of note.",
+    "riskLow": "Low regulatory risk — no significant enforcement history found.",
+    "riskUnknown": "Risk level unknown — insufficient data.",
+    "startFailed": "Failed to start regulatory research. Please try again.",
+    "confidence": "confidence: {level}"
+  },
+  "forensicsExplanations": {
+    "gpsLocation": {
+      "what": "Reads the GPS coordinates hidden inside the image (EXIF data) and checks whether the photo was taken in the same Indian state where this recycler is registered.",
+      "why": "A recycler registered in Tamil Nadu uploading a photo taken in Delhi is a red flag. If GPS data is missing (common when photos are shared via WhatsApp), the check reports 'unverifiable' — it does not silently pass."
+    },
+    "timestampCheck": {
+      "what": "Reads the date and time the photo was taken from hidden EXIF metadata, then checks it against the claimed processing date using a tolerance window that depends on document type — site photos must be within ±7 days, invoices within ±30 days, registration certificates just need to predate the batch.",
+      "why": "A weighbridge slip created 41 days after the processing date, or a site photo taken a month before the batch existed, suggests the document was not produced at the time of processing."
+    },
+    "pdfCreationDate": {
+      "what": "Reads the creation date stored in the PDF's metadata and checks it against the claimed processing date using the tolerance window for this document type.",
+      "why": "A legitimate weighbridge slip PDF would have been generated on or very close to the processing date. A PDF created weeks later suggests it was typed up retrospectively, even if it claims to document an earlier event."
+    },
+    "pdfModificationConsistency": {
+      "what": "Checks whether the PDF's last-modified date is the same as or after its creation date.",
+      "why": "If a PDF shows a modification date that is earlier than its creation date, that is technically impossible under normal circumstances and strongly indicates the metadata has been manually altered — a common method used to backdate documents."
+    },
+    "pdfAuthorship": {
+      "what": "Reads the author name and software used to create the PDF from its metadata.",
+      "why": "Legitimate documents from registered recyclers or certified weighbridge systems usually carry the name of the organisation or software that produced them. An author listed as 'anonymous' or missing entirely does not automatically mean fraud, but it removes one layer of traceability."
+    },
+    "deviceIdentification": {
+      "what": "Reads the camera make and model from the image's EXIF metadata.",
+      "why": "This is informational — it tells you what device took the photo. If multiple photos across different batches consistently come from the same personal phone rather than facility CCTV or an official device, that pattern is worth noting."
+    },
+    "reverseImageDuplicate": {
+      "what": "Computes a visual fingerprint of the image (a perceptual hash) and compares it against every other image already uploaded across all checks in this system.",
+      "why": "In the plastic EPR fraud cases, recyclers reused the same facility photos across hundreds of certificate claims to make it appear that multiple processing events occurred. If this image is visually identical to one already on file for a different check or recycler, it is a significant red flag."
+    },
+    "exifExtraction": {
+      "what": "The system attempted to read the hidden metadata embedded in this image file.",
+      "why": "If extraction fails entirely, it usually means the file is corrupt, in an unexpected format, or the metadata was deliberately stripped. All downstream checks (GPS, timestamp, device) will be unverifiable as a result."
+    }
+  }
+}

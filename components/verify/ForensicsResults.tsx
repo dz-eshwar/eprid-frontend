@@ -2,11 +2,12 @@
 
 import { CheckCircle, XCircle, HelpCircle, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { cn } from "@/lib/utils";
-import { getExplanation } from "@/lib/forensicsExplanations";
+import { getExplanationKey } from "@/lib/forensicsExplanations";
 import type {
   EvidenceUploadResponse,
   FileForensicsResult,
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export function ForensicsResults({ result, onRunAnother }: Props) {
+  const t = useTranslations("forensicsResults");
   const failCount = result.results.filter((r) => r.overallStatus === "FAIL").length;
   const passCount = result.results.filter((r) => r.overallStatus === "PASS").length;
   const unverifiableCount = result.results.filter((r) => r.overallStatus === "UNVERIFIABLE").length;
@@ -39,17 +41,17 @@ export function ForensicsResults({ result, onRunAnother }: Props) {
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="font-semibold text-[#444441]">Forensics complete</h2>
+            <h2 className="font-semibold text-[#444441]">{t("heading")}</h2>
             <p className="text-sm text-[#444441]/70 mt-1">
-              {result.filesProcessed} file{result.filesProcessed !== 1 ? "s" : ""} processed
+              {t("filesProcessed", { count: result.filesProcessed })}
               {passCount > 0 && (
-                <> · <span className="text-[#3B6D11] font-medium">{passCount} passed</span></>
+                <> · <span className="text-[#3B6D11] font-medium">{t("passed", { count: passCount })}</span></>
               )}
               {failCount > 0 && (
-                <> · <span className="text-[#A32D2D] font-medium">{failCount} failed</span></>
+                <> · <span className="text-[#A32D2D] font-medium">{t("failed", { count: failCount })}</span></>
               )}
               {unverifiableCount > 0 && (
-                <> · <span className="text-[#854F0B] font-medium">{unverifiableCount} unverifiable</span></>
+                <> · <span className="text-[#854F0B] font-medium">{t("unverifiable", { count: unverifiableCount })}</span></>
               )}
             </p>
           </div>
@@ -66,13 +68,15 @@ export function ForensicsResults({ result, onRunAnother }: Props) {
       ))}
 
       <Button variant="outline" onClick={onRunAnother} className="w-full">
-        Start a new check
+        {t("startNewCheck")}
       </Button>
     </div>
   );
 }
 
 function FileResult({ result }: { result: FileForensicsResult }) {
+  const t = useTranslations("forensicsResults");
+  const tExp = useTranslations("forensicsExplanations");
   const [expanded, setExpanded] = useState(result.overallStatus !== "PASS");
 
   return (
@@ -87,7 +91,7 @@ function FileResult({ result }: { result: FileForensicsResult }) {
           <div className="min-w-0">
             <p className="text-sm font-medium text-[#444441] truncate">{result.fileName}</p>
             <p className="text-xs text-[#444441]/50">
-              {result.checks.length} check{result.checks.length !== 1 ? "s" : ""}
+              {t("checksCount", { count: result.checks.length })}
             </p>
           </div>
         </div>
@@ -100,7 +104,10 @@ function FileResult({ result }: { result: FileForensicsResult }) {
       {expanded && (
         <div className="mt-4 space-y-3 border-t border-black/5 pt-4">
           {result.checks.map((check, i) => {
-            const explanation = getExplanation(check.checkName);
+            const explanationKey = getExplanationKey(check.checkName);
+            const explanation = explanationKey
+              ? `${tExp(`${explanationKey}.what`)}\n\n${tExp(`${explanationKey}.why`)}`
+              : null;
             return (
               <div key={i} className="flex items-start gap-3">
                 <StatusIcon status={check.status} className="mt-0.5 shrink-0" />
@@ -112,7 +119,7 @@ function FileResult({ result }: { result: FileForensicsResult }) {
                       <Tooltip content={explanation}>
                         <button
                           className="text-[#444441]/30 hover:text-[#0F6E56] transition-colors focus:outline-none"
-                          aria-label={`What does "${check.checkName}" check?`}
+                          aria-label={t("whatDoesCheckDo", { name: check.checkName })}
                         >
                           <Info className="h-3.5 w-3.5" />
                         </button>

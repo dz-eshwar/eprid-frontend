@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Search,
   Shield,
@@ -19,6 +20,7 @@ import { EPRidMark } from "@/components/branding/EPRidLogo";
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
 function LandingNavbar() {
+  const t = useTranslations("landing.nav");
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -31,26 +33,26 @@ function LandingNavbar() {
             EPR<span className="text-[#D85A30]">I</span>d
           </span>
           <span className="hidden sm:inline text-xs text-[#374151]/50 font-medium border-l border-black/10 pl-2">
-            Battery EPR Verification
+            {t("tagline")}
           </span>
         </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#374151]">
           <a href="#how-it-works" className="hover:text-[#0F6E56] transition-colors">
-            How it works
+            {t("howItWorks")}
           </a>
           <a href="#who-its-for" className="hover:text-[#0F6E56] transition-colors">
-            For Producers
+            {t("forProducers")}
           </a>
           <a href="#who-its-for" className="hover:text-[#0F6E56] transition-colors">
-            For Consultancies
+            {t("forConsultancies")}
           </a>
           <a
             href="#early-access"
             className="bg-[#D85A30] text-white px-4 py-2 rounded-md hover:opacity-90 transition-opacity font-semibold"
           >
-            Get Early Access
+            {t("getEarlyAccess")}
           </a>
         </div>
 
@@ -58,7 +60,7 @@ function LandingNavbar() {
         <button
           className="md:hidden text-[#374151]"
           onClick={() => setMenuOpen((o) => !o)}
-          aria-label="Toggle menu"
+          aria-label={t("toggleMenu")}
         >
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -68,20 +70,20 @@ function LandingNavbar() {
       {menuOpen && (
         <div className="md:hidden border-t border-black/5 bg-white px-6 py-4 flex flex-col gap-4 text-sm font-medium text-[#374151]">
           <a href="#how-it-works" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
-            How it works
+            {t("howItWorks")}
           </a>
           <a href="#who-its-for" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
-            For Producers
+            {t("forProducers")}
           </a>
           <a href="#who-its-for" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
-            For Consultancies
+            {t("forConsultancies")}
           </a>
           <a
             href="#early-access"
             onClick={() => setMenuOpen(false)}
             className="bg-[#D85A30] text-white px-4 py-2.5 rounded-md text-center font-semibold hover:opacity-90 transition-opacity"
           >
-            Get Early Access
+            {t("getEarlyAccess")}
           </a>
         </div>
       )}
@@ -92,23 +94,23 @@ function LandingNavbar() {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 function HeroSection() {
+  const t = useTranslations("landing.hero");
+
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <div className="inline-flex items-center gap-2 bg-[#0F6E56]/8 text-[#0F6E56] text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
           <Shield className="h-3.5 w-3.5" />
-          Built for BWMR 2022 compliance
+          {t("badge")}
         </div>
 
         <h1 className="text-4xl md:text-5xl font-bold text-[#374151] leading-tight tracking-tight mb-5">
-          Know if your EPR certificate is real
-          <span className="block text-[#0F6E56]">before you file.</span>
+          {t("titleLine1")}
+          <span className="block text-[#0F6E56]">{t("titleLine2")}</span>
         </h1>
 
         <p className="text-lg text-[#374151]/65 max-w-2xl mx-auto leading-relaxed mb-10">
-          India&apos;s plastic EPR system saw ₹700Cr+ in fraudulent certificates before
-          anyone caught it. Battery EPR is next. E-PRid gives producers, PROs, and compliance
-          consultancies a risk score on every recycler and certificate — before they buy.
+          {t("body")}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
@@ -116,18 +118,18 @@ function HeroSection() {
             href="/login"
             className="bg-[#D85A30] text-white px-7 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity"
           >
-            Run a Risk Check
+            {t("ctaPrimary")}
           </Link>
           <a
             href="#how-it-works"
             className="border border-[#0F6E56] text-[#0F6E56] px-7 py-3 rounded-md font-semibold text-sm hover:bg-[#0F6E56]/5 transition-colors"
           >
-            See how it works
+            {t("ctaSecondary")}
           </a>
         </div>
 
         <p className="text-xs text-[#374151]/40 font-medium tracking-wide uppercase">
-          Built for India&apos;s Battery Waste Management Rules, 2022
+          {t("footnote")}
         </p>
       </div>
     </section>
@@ -136,29 +138,18 @@ function HeroSection() {
 
 // ─── Problem bar ─────────────────────────────────────────────────────────────
 
-const STATS = [
-  {
-    stat: "520+",
-    desc: "Registered battery recyclers — with no independent verification layer",
-  },
-  {
-    stat: "₹700Cr+",
-    desc: "Fraudulent plastic EPR certs undetected. Battery EPR uses the same architecture.",
-  },
-  {
-    stat: "June 30",
-    desc: "Annual return deadline — with no way to verify what you're filing",
-  },
-];
+const STAT_KEYS = ["recyclers", "fraud", "deadline"] as const;
 
 function ProblemBar() {
+  const t = useTranslations("landing.stats");
+
   return (
     <section className="bg-[#0F6E56] py-14">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
-        {STATS.map(({ stat, desc }) => (
-          <div key={stat} className="text-center md:text-left">
-            <p className="text-3xl md:text-4xl font-bold text-white mb-2">{stat}</p>
-            <p className="text-sm text-white/70 leading-relaxed">{desc}</p>
+        {STAT_KEYS.map((key) => (
+          <div key={key} className="text-center md:text-left">
+            <p className="text-3xl md:text-4xl font-bold text-white mb-2">{t(`${key}.stat`)}</p>
+            <p className="text-sm text-white/70 leading-relaxed">{t(`${key}.desc`)}</p>
           </div>
         ))}
       </div>
@@ -168,41 +159,28 @@ function ProblemBar() {
 
 // ─── How it works ─────────────────────────────────────────────────────────────
 
-const STEPS = [
-  {
-    number: "01",
-    icon: Search,
-    title: "Submit recycler name or certificate ID",
-    desc: "Enter the recycler name, BWMR registration number, and batch details you want to verify. No portal access required.",
-  },
-  {
-    number: "02",
-    icon: Shield,
-    title: "E-PRid runs three independent checks",
-    desc: "Document forensics (EXIF, geotag, timestamps), capacity plausibility against public CPCB data, and regulatory history from enforcement databases.",
-  },
-  {
-    number: "03",
-    icon: FileText,
-    title: "Risk score and downloadable report",
-    desc: "Get a Low / Medium / High risk rating with a per-check breakdown and a PDF report you can attach to your compliance file.",
-  },
-];
+const STEP_KEYS = [
+  { key: "submit", number: "01", icon: Search },
+  { key: "checks", number: "02", icon: Shield },
+  { key: "score", number: "03", icon: FileText },
+] as const;
 
 function HowItWorksSection() {
+  const t = useTranslations("landing.howItWorks");
+
   return (
     <section id="how-it-works" className="bg-[#F9FAFB] py-20">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl font-bold text-[#374151] mb-3">How it works</h2>
+          <h2 className="text-3xl font-bold text-[#374151] mb-3">{t("heading")}</h2>
           <p className="text-[#374151]/55 max-w-xl mx-auto text-sm leading-relaxed">
-            Three checks, one report. Designed to be completed before a certificate purchase, not after.
+            {t("subheading")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {STEPS.map(({ number, icon: Icon, title, desc }) => (
-            <div key={number} className="relative">
+          {STEP_KEYS.map(({ key, number, icon: Icon }) => (
+            <div key={key} className="relative">
               {/* Connector line on desktop */}
               <div className="hidden md:block absolute top-8 left-[calc(50%+2rem)] right-[-50%] h-px bg-[#0F6E56]/15 last:hidden" />
 
@@ -216,8 +194,8 @@ function HowItWorksSection() {
                   </span>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[#374151] mb-2">{title}</h3>
-                  <p className="text-sm text-[#374151]/60 leading-relaxed">{desc}</p>
+                  <h3 className="font-semibold text-[#374151] mb-2">{t(`steps.${key}.title`)}</h3>
+                  <p className="text-sm text-[#374151]/60 leading-relaxed">{t(`steps.${key}.desc`)}</p>
                 </div>
               </div>
             </div>
@@ -231,60 +209,48 @@ function HowItWorksSection() {
 // ─── Who it's for ─────────────────────────────────────────────────────────────
 
 function VerifiedBadge() {
+  const t = useTranslations("landing.whoItsFor");
   return (
     <span className="inline-flex items-center gap-1.5 bg-[#7C3AED]/10 text-[#7C3AED] text-xs font-semibold px-3 py-1.5 rounded-full border border-[#7C3AED]/20">
       <CheckCircle2 className="h-3.5 w-3.5" />
-      Verified Recycler
+      {t("verifiedBadge")}
     </span>
   );
 }
 
-const AUDIENCES = [
-  {
-    icon: Briefcase,
-    title: "EPR Compliance Consultancies",
-    body: "White-label the check. Run it for every client before filing. One bad certificate can cost your client an Environmental Compensation notice — and your firm its reputation.",
-    badge: null,
-  },
-  {
-    icon: Factory,
-    title: "Producers & EV OEMs",
-    body: "Your EPR obligation doesn't end at buying a certificate. If the recycler behind it is fraudulent, the liability lands on you. Verify before you file.",
-    badge: null,
-  },
-  {
-    icon: Recycle,
-    title: "Recyclers",
-    body: "Stand out from the crowd. Get a Verified Recycler badge that producers can trust — because you've passed an independent check, not just self-reported.",
-    badge: <VerifiedBadge />,
-  },
-];
+const AUDIENCE_KEYS = [
+  { key: "consultancies", icon: Briefcase, badge: false },
+  { key: "producers", icon: Factory, badge: false },
+  { key: "recyclers", icon: Recycle, badge: true },
+] as const;
 
 function WhoItsForSection() {
+  const t = useTranslations("landing.whoItsFor");
+
   return (
     <section id="who-its-for" className="bg-white py-20">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl font-bold text-[#374151] mb-3">Who it&apos;s for</h2>
+          <h2 className="text-3xl font-bold text-[#374151] mb-3">{t("heading")}</h2>
           <p className="text-[#374151]/55 max-w-xl mx-auto text-sm leading-relaxed">
-            Every participant in the EPR certificate chain has something at stake.
+            {t("subheading")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {AUDIENCES.map(({ icon: Icon, title, body, badge }) => (
+          {AUDIENCE_KEYS.map(({ key, icon: Icon, badge }) => (
             <div
-              key={title}
+              key={key}
               className="rounded-xl border border-black/8 bg-[#F9FAFB] p-6 flex flex-col gap-4"
             >
               <div className="w-10 h-10 rounded-lg bg-[#0F6E56]/10 flex items-center justify-center shrink-0">
                 <Icon className="h-5 w-5 text-[#0F6E56]" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-[#374151] mb-2">{title}</h3>
-                <p className="text-sm text-[#374151]/60 leading-relaxed">{body}</p>
+                <h3 className="font-semibold text-[#374151] mb-2">{t(`audiences.${key}.title`)}</h3>
+                <p className="text-sm text-[#374151]/60 leading-relaxed">{t(`audiences.${key}.body`)}</p>
               </div>
-              {badge && <div>{badge}</div>}
+              {badge && <div><VerifiedBadge /></div>}
             </div>
           ))}
         </div>
@@ -296,6 +262,7 @@ function WhoItsForSection() {
 // ─── Early access ─────────────────────────────────────────────────────────────
 
 function EarlyAccessSection() {
+  const t = useTranslations("landing.earlyAccess");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -315,7 +282,7 @@ function EarlyAccessSection() {
       if (!res.ok) throw new Error("Request failed");
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Email us directly: sake.winz@gmail.com");
+      setError(t("errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -324,16 +291,15 @@ function EarlyAccessSection() {
   return (
     <section id="early-access" className="bg-[#111827] py-20">
       <div className="max-w-2xl mx-auto px-6 text-center">
-        <h2 className="text-3xl font-bold text-white mb-4">Get early access</h2>
+        <h2 className="text-3xl font-bold text-white mb-4">{t("heading")}</h2>
         <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg mx-auto">
-          We&apos;re onboarding a small group of compliance consultancies and producers for the
-          pilot. No commitment — just a risk check on the recycler of your choice.
+          {t("body")}
         </p>
 
         {submitted ? (
           <div className="inline-flex items-center gap-2 bg-[#0F6E56]/20 text-[#0F6E56] border border-[#0F6E56]/30 rounded-lg px-6 py-4 text-sm font-medium">
             <CheckCircle2 className="h-5 w-5 shrink-0" />
-            We&apos;ll be in touch. Watch your inbox.
+            {t("submittedMessage")}
           </div>
         ) : (
           <>
@@ -343,7 +309,7 @@ function EarlyAccessSection() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder={t("emailPlaceholder")}
                 className="flex-1 rounded-md border border-white/15 bg-white/5 text-white placeholder-white/30 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
               />
               <button
@@ -351,7 +317,7 @@ function EarlyAccessSection() {
                 disabled={loading}
                 className="bg-[#D85A30] text-white px-6 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 whitespace-nowrap"
               >
-                {loading ? "Sending…" : "Request Access"}
+                {loading ? t("sending") : t("requestAccess")}
               </button>
             </form>
             {error && (
@@ -367,24 +333,25 @@ function EarlyAccessSection() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
+  const t = useTranslations("landing.footer");
   return (
     <footer className="bg-[#F9FAFB] border-t border-black/8 py-10">
       <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
-          <p className="font-bold text-[#374151]">E-PRid — EPR Certificate Verification</p>
+          <p className="font-bold text-[#374151]">{t("title")}</p>
           <p className="text-xs text-[#374151]/45 mt-1">
-            Built for India&apos;s Battery Waste Management Rules, 2022
+            {t("subtitle")}
           </p>
         </div>
         <div className="flex items-center gap-6 text-sm text-[#374151]/50">
           <Link href="/privacy" className="hover:text-[#374151] transition-colors">
-            Privacy Policy
+            {t("privacyPolicy")}
           </Link>
           <Link href="/terms" className="hover:text-[#374151] transition-colors">
-            Terms of Service
+            {t("termsOfService")}
           </Link>
           <Link href="/login" className="text-[#0F6E56] font-medium hover:underline flex items-center gap-1">
-            Log in <ArrowRight className="h-3.5 w-3.5" />
+            {t("login")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

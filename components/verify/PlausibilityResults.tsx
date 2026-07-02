@@ -2,6 +2,7 @@
 
 import { CheckCircle, XCircle, HelpCircle, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 import type { PlausibilityCheckResponse, SubCheckStatus } from "@/lib/api/types";
@@ -13,9 +14,11 @@ interface Props {
 }
 
 export function PlausibilityResults({ result, defaultExpanded = false }: Props) {
+  const t = useTranslations("plausibilityResults");
   const [expanded, setExpanded] = useState(defaultExpanded || result.overallStatus !== "PASS");
 
-  const { bg, border, label } = statusMeta(result.overallStatus);
+  const label = t(`status.${result.overallStatus}`);
+  const { bg, border } = statusMeta(result.overallStatus);
 
   return (
     <Card className={cn("border", border, bg)}>
@@ -27,7 +30,7 @@ export function PlausibilityResults({ result, defaultExpanded = false }: Props) 
         <div className="flex items-center gap-3">
           <SubCheckIcon status={result.overallStatus} size="lg" />
           <div>
-            <p className="font-semibold text-[#444441]">Batch plausibility check</p>
+            <p className="font-semibold text-[#444441]">{t("heading")}</p>
             <p className="text-xs text-[#444441]/60 mt-0.5">{label}</p>
           </div>
         </div>
@@ -69,29 +72,13 @@ export function PlausibilityResults({ result, defaultExpanded = false }: Props) 
 function statusMeta(status: SubCheckStatus) {
   switch (status) {
     case "PASS":
-      return {
-        bg: "bg-[#3B6D11]/5",
-        border: "border-[#3B6D11]/30",
-        label: "All batch details are within plausible industry ranges.",
-      };
+      return { bg: "bg-[#3B6D11]/5", border: "border-[#3B6D11]/30" };
     case "WARN":
-      return {
-        bg: "bg-[#854F0B]/5",
-        border: "border-[#854F0B]/30",
-        label: "Some batch details are unusual — review the findings below.",
-      };
+      return { bg: "bg-[#854F0B]/5", border: "border-[#854F0B]/30" };
     case "FAIL":
-      return {
-        bg: "bg-[#A32D2D]/5",
-        border: "border-[#A32D2D]/30",
-        label: "One or more batch details appear implausible — this check has failed.",
-      };
+      return { bg: "bg-[#A32D2D]/5", border: "border-[#A32D2D]/30" };
     case "UNVERIFIABLE":
-      return {
-        bg: "bg-[#854F0B]/5",
-        border: "border-[#854F0B]/30",
-        label: "Some checks could not be verified — additional data is needed.",
-      };
+      return { bg: "bg-[#854F0B]/5", border: "border-[#854F0B]/30" };
   }
 }
 

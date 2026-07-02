@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import { useTranslations } from "next-intl";
 import { FileText, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { VaultUploadForm } from "./VaultUploadForm";
@@ -21,6 +22,7 @@ export function DocTypeTable({
   docTypes, docs, recyclerId, consentAcceptedAt, token,
   onNeedRecycler, onNeedConsent, onUploaded,
 }: Props) {
+  const t = useTranslations("vault.docTypeTable");
   const [expandedType, setExpandedType] = useState<VaultDocType | null>(null);
 
   function handleUploadClick(type: VaultDocType) {
@@ -40,10 +42,10 @@ export function DocTypeTable({
         <thead>
           <tr className="border-b border-black/10 bg-[#F9F9F8]">
             <th className="text-left px-4 py-3 font-medium text-[#444441]/50 text-xs uppercase tracking-wide">
-              Document type
+              {t("documentType")}
             </th>
             <th className="text-center px-4 py-3 font-medium text-[#444441]/50 text-xs uppercase tracking-wide w-24">
-              Uploaded
+              {t("uploaded")}
             </th>
             <th className="px-4 py-3 w-28" />
           </tr>
@@ -83,9 +85,9 @@ export function DocTypeTable({
                       className="text-xs py-1.5 px-3 inline-flex items-center gap-1.5"
                     >
                       {isExpanded ? (
-                        <><X className="h-3 w-3" /> Cancel</>
+                        <><X className="h-3 w-3" /> {t("cancel")}</>
                       ) : (
-                        <><Upload className="h-3 w-3" /> Upload</>
+                        <><Upload className="h-3 w-3" /> {t("upload")}</>
                       )}
                     </Button>
                   </td>

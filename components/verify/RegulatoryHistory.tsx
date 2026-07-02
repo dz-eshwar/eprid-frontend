@@ -5,6 +5,7 @@ import {
   ExternalLink, ChevronDown, ChevronUp
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED" }: Props) {
+  const t = useTranslations("regulatoryHistory");
   const [status,   setStatus]   = useState<RegulatoryStatus>(initialStatus);
   const [result,   setResult]   = useState<RegulatoryHistoryResponse | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -53,7 +55,7 @@ export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED
     try {
       await triggerRegulatoryHistory(checkId, token);
     } catch {
-      setError("Failed to start regulatory research. Please try again.");
+      setError(t("startFailed"));
       setStatus("NOT_STARTED");
       return;
     }
@@ -73,7 +75,8 @@ export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const riskLabel = result?.overallRisk;
-  const { icon: RiskIcon, color, bg, border, label } = riskMeta(riskLabel ?? null, status);
+  const { icon: RiskIcon, color, bg, border } = riskMeta(riskLabel ?? null, status);
+  const label = statusLabel(t, riskLabel ?? null, status);
 
   return (
     <Card className={cn("border", border, bg)}>
@@ -84,7 +87,7 @@ export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED
             ? <Loader2 className="h-5 w-5 text-[#854F0B] animate-spin shrink-0" />
             : <RiskIcon className={cn("h-5 w-5 shrink-0", color)} />}
           <div>
-            <p className="font-semibold text-[#444441]">Regulatory history</p>
+            <p className="font-semibold text-[#444441]">{t("heading")}</p>
             <p className="text-xs text-[#444441]/60 mt-0.5">{label}</p>
           </div>
         </div>
@@ -92,7 +95,7 @@ export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED
         <div className="flex items-center gap-2 shrink-0">
           {status === "NOT_STARTED" && (
             <Button variant="outline" onClick={start}>
-              Run check
+              {t("runCheck")}
             </Button>
           )}
           {(status === "COMPLETE" || status === "FAILED") && result && (
@@ -135,7 +138,7 @@ export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED
                         {f.source} · {f.findingType.replace(/_/g, " ")}
                         {f.findingDate ? ` · ${f.findingDate}` : ""}
                         {" · "}
-                        <span className="opacity-70">confidence: {f.confidence.toLowerCase()}</span>
+                        <span className="opacity-70">{t("confidence", { level: f.confidence.toLowerCase() })}</span>
                       </p>
                     </div>
                     {f.url && (
@@ -170,24 +173,32 @@ export function RegulatoryHistory({ checkId, token, initialStatus = "NOT_STARTED
 // ── helpers ───────────────────────────────────────────────────────────────────
 
 function riskMeta(risk: RegulatoryRisk | null, status: RegulatoryStatus) {
-  if (status === "NOT_STARTED") return {
-    icon: Shield, color: "text-[#444441]/30", bg: "", border: "border-black/10",
-    label: "No regulatory research has been run yet. Click 'Run check' to start.",
-  };
-  if (status === "PENDING") return {
-    icon: Loader2, color: "text-[#854F0B]", bg: "bg-[#854F0B]/5", border: "border-[#854F0B]/30",
-    label: "Researching CPCB enforcement records, NGT orders, and news…",
-  };
-  if (status === "FAILED") return {
-    icon: Shield, color: "text-[#444441]/40", bg: "", border: "border-black/10",
-    label: "Research could not be completed — API key may not be configured.",
-  };
+  if (status === "NOT_STARTED") return { icon: Shield, color: "text-[#444441]/30", bg: "", border: "border-black/10" };
+  if (status === "PENDING") return { icon: Loader2, color: "text-[#854F0B]", bg: "bg-[#854F0B]/5", border: "border-[#854F0B]/30" };
+  if (status === "FAILED") return { icon: Shield, color: "text-[#444441]/40", bg: "", border: "border-black/10" };
 
   switch (risk) {
-    case "HIGH":    return { icon: ShieldX,     color: "text-[#A32D2D]", bg: "bg-[#A32D2D]/5", border: "border-[#A32D2D]/30", label: "High regulatory risk — review findings." };
-    case "MEDIUM":  return { icon: ShieldAlert,  color: "text-[#854F0B]", bg: "bg-[#854F0B]/5", border: "border-[#854F0B]/30", label: "Medium regulatory risk — some findings of note." };
-    case "LOW":     return { icon: ShieldCheck,  color: "text-[#3B6D11]", bg: "bg-[#3B6D11]/5", border: "border-[#3B6D11]/30", label: "Low regulatory risk — no significant enforcement history found." };
-    default:        return { icon: Shield,        color: "text-[#444441]/40", bg: "",              border: "border-black/10",      label: "Risk level unknown — insufficient data." };
+    case "HIGH":    return { icon: ShieldX,    color: "text-[#A32D2D]", bg: "bg-[#A32D2D]/5", border: "border-[#A32D2D]/30" };
+    case "MEDIUM":  return { icon: ShieldAlert, color: "text-[#854F0B]", bg: "bg-[#854F0B]/5", border: "border-[#854F0B]/30" };
+    case "LOW":     return { icon: ShieldCheck, color: "text-[#3B6D11]", bg: "bg-[#3B6D11]/5", border: "border-[#3B6D11]/30" };
+    default:        return { icon: Shield,       color: "text-[#444441]/40", bg: "",             border: "border-black/10" };
+  }
+}
+
+function statusLabel(
+  t: ReturnType<typeof useTranslations>,
+  risk: RegulatoryRisk | null,
+  status: RegulatoryStatus
+) {
+  if (status === "NOT_STARTED") return t("notStarted");
+  if (status === "PENDING") return t("pending");
+  if (status === "FAILED") return t("failedStatus");
+
+  switch (risk) {
+    case "HIGH":   return t("riskHigh");
+    case "MEDIUM": return t("riskMedium");
+    case "LOW":    return t("riskLow");
+    default:       return t("riskUnknown");
   }
 }
 

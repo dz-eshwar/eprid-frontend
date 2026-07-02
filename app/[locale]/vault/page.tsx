@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ConsentDialog } from "@/components/vault/ConsentDialog";
@@ -22,6 +23,7 @@ const FALLBACK_DOC_TYPES: VaultDocTypeInfo[] = (
 ).map((type) => ({ type, label: VAULT_DOC_TYPE_LABELS[type], description: "" }));
 
 export default function VaultPage() {
+  const t = useTranslations("vault");
   const { token, user } = useAuth();
   const isRecycler = user?.role === "RECYCLER";
 
@@ -66,13 +68,13 @@ export default function VaultPage() {
         <div className="inline-flex rounded-full bg-[#0F6E56]/10 p-4 mb-6">
           <FolderOpen className="h-10 w-10 text-[#0F6E56]" />
         </div>
-        <h1 className="text-2xl font-bold text-[#444441] mb-3">Sign in to access your vault</h1>
+        <h1 className="text-2xl font-bold text-[#444441] mb-3">{t("signInTitle")}</h1>
         <p className="text-[#444441]/70 mb-8 leading-relaxed">
-          The document vault is a private space for recyclers to store registration, GST, and processing receipts.
+          {t("signInBody")}
         </p>
         <div className="flex gap-3 justify-center">
-          <Link href="/login"><Button variant="primary">Log in</Button></Link>
-          <Link href="/register"><Button variant="outline">Sign up</Button></Link>
+          <Link href="/login"><Button variant="primary">{t("login")}</Button></Link>
+          <Link href="/register"><Button variant="outline">{t("signup")}</Button></Link>
         </div>
       </div>
     );
@@ -81,9 +83,9 @@ export default function VaultPage() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-10 space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-[#444441]">Document Vault</h1>
+        <h1 className="text-2xl font-bold text-[#444441]">{t("title")}</h1>
         <p className="mt-1 text-sm text-[#444441]/60">
-          Store registration, GST certificates and processing receipts in one place.
+          {t("subtitle")}
         </p>
       </div>
 
@@ -93,7 +95,7 @@ export default function VaultPage() {
           {recyclerId ? (
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs font-medium text-[#444441]/40 uppercase tracking-wide">Vault for recycler</p>
+                <p className="text-xs font-medium text-[#444441]/40 uppercase tracking-wide">{t("recyclerFor")}</p>
                 <p className="text-sm font-mono text-[#444441] mt-0.5 break-all">{recyclerId}</p>
               </div>
               <Button
@@ -101,21 +103,21 @@ export default function VaultPage() {
                 className="text-xs py-1.5 px-3 shrink-0"
                 onClick={() => { setRecyclerId(""); setRecyclerIdInput(""); setShowConsent(false); }}
               >
-                Change
+                {t("change")}
               </Button>
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm font-medium text-[#444441]">Which recycler is this vault for?</p>
+              <p className="text-sm font-medium text-[#444441]">{t("whichRecycler")}</p>
               <p className="text-xs text-[#444441]/45">
-                Enter the recycler ID from a previous verification check.
+                {t("enterRecyclerId")}
               </p>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={recyclerIdInput}
                   onChange={(e) => setRecyclerIdInput(e.target.value)}
-                  placeholder="Recycler ID (UUID)"
+                  placeholder={t("recyclerIdPlaceholder")}
                   className="flex-1 rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
                 />
                 <Button
@@ -123,7 +125,7 @@ export default function VaultPage() {
                   onClick={() => setRecyclerId(recyclerIdInput.trim())}
                   disabled={!recyclerIdInput.trim()}
                 >
-                  Set
+                  {t("set")}
                 </Button>
               </div>
             </div>
@@ -152,9 +154,9 @@ export default function VaultPage() {
       {/* Prompt consent if recycler set but not yet accepted */}
       {!loading && recyclerId && !consentAcceptedAt && !showConsent && (
         <div className="rounded-xl border border-black/10 bg-white p-5 flex items-center justify-between gap-4">
-          <p className="text-sm text-[#444441]/70">Accept the disclosure to start uploading documents.</p>
+          <p className="text-sm text-[#444441]/70">{t("acceptDisclosurePrompt")}</p>
           <Button variant="primary" className="shrink-0" onClick={() => setShowConsent(true)}>
-            Review &amp; accept
+            {t("reviewAndAccept")}
           </Button>
         </div>
       )}
@@ -162,12 +164,12 @@ export default function VaultPage() {
       {/* Prompt recycler ID if not set (non-recycler roles only) */}
       {!loading && !isRecycler && !recyclerId && (
         <div className="rounded-xl border border-dashed border-black/15 p-5 text-center">
-          <p className="text-sm text-[#444441]/50">Set a recycler ID above to upload documents.</p>
+          <p className="text-sm text-[#444441]/50">{t("setRecyclerIdPrompt")}</p>
           <button
             className="mt-2 text-sm text-[#0F6E56] hover:underline"
             onClick={handleNeedRecycler}
           >
-            Set recycler ID
+            {t("setRecyclerId")}
           </button>
         </div>
       )}
@@ -176,7 +178,7 @@ export default function VaultPage() {
       {!loading && (
         <div className="space-y-3">
           <h2 className="text-sm font-semibold text-[#444441]/50 uppercase tracking-wide">
-            Your documents ({docs.length})
+            {t("yourDocuments", { count: docs.length })}
           </h2>
           <VaultDocList
             docs={docs}

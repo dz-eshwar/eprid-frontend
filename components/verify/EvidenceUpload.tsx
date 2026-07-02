@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Upload, X, FileText, Image, Info } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -43,6 +44,7 @@ function inferType(file: File): EvidenceType {
 }
 
 export function EvidenceUpload({ check, token, onComplete }: Props) {
+  const t = useTranslations("evidenceUpload");
   const [entries, setEntries] = useState<FileEntry[]>([]);
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,9 +56,9 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
 
     Array.from(incoming).forEach((f) => {
       if (!ALLOWED.includes(f.type)) {
-        errors.push(`"${f.name}" — unsupported type`);
+        errors.push(t("unsupportedType", { name: f.name }));
       } else if (f.size > MAX_SIZE_MB * 1024 * 1024) {
-        errors.push(`"${f.name}" — exceeds ${MAX_SIZE_MB} MB`);
+        errors.push(t("exceedsSize", { name: f.name, max: MAX_SIZE_MB }));
       } else {
         valid.push({ file: f, type: inferType(f) });
       }
@@ -84,7 +86,7 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
   }
 
   async function handleSubmit() {
-    if (entries.length === 0) { setError("Add at least one file"); return; }
+    if (entries.length === 0) { setError(t("addAtLeastOne")); return; }
     setError(null);
     setLoading(true);
     try {
@@ -96,7 +98,7 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
       );
       onComplete(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+      setError(err instanceof Error ? err.message : t("uploadFailed"));
     } finally {
       setLoading(false);
     }
@@ -105,10 +107,9 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Upload evidence</CardTitle>
+        <CardTitle>{t("cardTitle")}</CardTitle>
         <p className="text-sm text-[#444441]/60 mt-1">
-          Add up to {MAX_FILES} files. Label each one so we apply the right date checks —
-          a registration certificate from 2022 shouldn&apos;t be flagged just because it predates this batch.
+          {t("cardSubtitle", { max: MAX_FILES })}
         </p>
       </CardHeader>
 
@@ -146,10 +147,10 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
         />
         <Upload className="h-7 w-7 text-[#444441]/30 mx-auto mb-1.5" />
         <p className="text-sm font-medium text-[#444441]">
-          Drag &amp; drop files, or <span className="text-[#0F6E56]">click to browse</span>
+          {t.rich("dropzoneCta", { link: (chunks) => <span className="text-[#0F6E56]">{chunks}</span> })}
         </p>
         <p className="text-xs text-[#444441]/40 mt-1">
-          JPEG · PNG · WebP · TIFF · PDF &nbsp;·&nbsp; {entries.length}/{MAX_FILES} added
+          {t("fileTypesHint")} &nbsp;·&nbsp; {t("addedCount", { count: entries.length, max: MAX_FILES })}
         </p>
       </div>
 
@@ -180,7 +181,7 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
               {/* Type selector */}
               <div className="px-3 py-2 flex items-center gap-2">
                 <label className="text-xs text-[#444441]/50 whitespace-nowrap">
-                  Document type:
+                  {t("documentTypeLabel")}
                 </label>
                 <select
                   value={entry.type}
@@ -213,7 +214,7 @@ export function EvidenceUpload({ check, token, onComplete }: Props) {
           onClick={handleSubmit}
           className="w-full"
         >
-          Run forensics checks ({entries.length} file{entries.length !== 1 ? "s" : ""})
+          {t("runForensics", { count: entries.length })}
         </Button>
       </div>
     </Card>

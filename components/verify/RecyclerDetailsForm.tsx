@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { PlausibilityResults } from "./PlausibilityResults";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
+  const t = useTranslations("recyclerDetailsForm");
   const [form, setForm] = useState({
     recyclerName: "",
     bwmrRegNumber: "",
@@ -57,7 +59,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
       const check = await createCheck(req, token);
       setPending(check);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create check");
+      setError(err instanceof Error ? err.message : t("createFailed"));
     } finally {
       setLoading(false);
     }
@@ -72,10 +74,9 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Batch details saved</CardTitle>
+            <CardTitle>{t("batchSaved")}</CardTitle>
             <p className="text-sm text-[#444441]/60 mt-1">
-              We ran an immediate plausibility check on the batch figures you entered.
-              Review the results below before uploading evidence.
+              {t("plausibilityIntro")}
             </p>
           </CardHeader>
         </Card>
@@ -84,7 +85,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
 
         <div className="flex gap-3">
           <Button variant="outline" onClick={() => setPending(null)} className="flex-1">
-            ← Edit details
+            {t("editDetails")}
           </Button>
           <Button
             variant="primary"
@@ -93,7 +94,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
             // FAIL is a warning, not a hard block — user may still upload evidence
             // but we make the risk visible
           >
-            {isFail ? "Continue anyway →" : "Continue to evidence upload →"}
+            {isFail ? t("continueAnyway") : t("continueToEvidence")}
           </Button>
         </div>
       </div>
@@ -103,93 +104,93 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recycler &amp; batch details</CardTitle>
+        <CardTitle>{t("cardTitle")}</CardTitle>
         <p className="text-sm text-[#444441]/60 mt-1">
-          Enter the recycler&apos;s details and the batch they&apos;re claiming.
+          {t("cardSubtitle")}
         </p>
       </CardHeader>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <fieldset className="space-y-4">
           <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
-            Recycler
+            {t("sectionRecycler")}
           </legend>
           <Row>
             <Field
-              label="Recycler name *"
+              label={t("fields.recyclerName")}
               value={form.recyclerName} onChange={set("recyclerName")}
-              required placeholder="e.g. ABC Recyclers Pvt Ltd"
+              required placeholder={t("fields.recyclerNamePlaceholder")}
             />
             <Field
-              label="BWMR registration number"
+              label={t("fields.bwmrRegNumber")}
               value={form.bwmrRegNumber} onChange={set("bwmrRegNumber")}
-              placeholder="e.g. BWMR/2023/001"
+              placeholder={t("fields.bwmrRegNumberPlaceholder")}
             />
           </Row>
           <Row>
             <div>
               <label className="block text-sm font-medium text-[#444441] mb-1.5">
-                Registered state
+                {t("fields.registeredState")}
               </label>
               <select
                 value={form.recyclerState}
                 onChange={set("recyclerState")}
                 className="w-full rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
               >
-                <option value="">— Select state —</option>
+                <option value="">{t("fields.selectState")}</option>
                 {INDIAN_STATES.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
             <Field
-              label="Self-reported annual capacity (tonnes)"
+              label={t("fields.selfReportedCapacity")}
               type="number" min="0" step="0.001"
               value={form.recyclerSelfReportedCapacityT}
               onChange={set("recyclerSelfReportedCapacityT")}
-              placeholder="e.g. 1200"
+              placeholder={t("fields.selfReportedCapacityPlaceholder")}
             />
           </Row>
         </fieldset>
 
         <fieldset className="space-y-4">
           <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
-            Producer (your client)
+            {t("sectionProducer")}
           </legend>
           <Row>
             <Field
-              label="Producer name *"
+              label={t("fields.producerName")}
               value={form.producerName} onChange={set("producerName")}
-              required placeholder="e.g. XYZ Battery Co"
+              required placeholder={t("fields.producerNamePlaceholder")}
             />
             <Field
-              label="CPCB registration number"
+              label={t("fields.cpcbRegNumber")}
               value={form.cpcbRegNumber} onChange={set("cpcbRegNumber")}
-              placeholder="e.g. CPCB/2023/001"
+              placeholder={t("fields.cpcbRegNumberPlaceholder")}
             />
           </Row>
         </fieldset>
 
         <fieldset className="space-y-4">
           <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
-            Batch being claimed
+            {t("sectionBatch")}
           </legend>
           <Row>
             <Field
-              label="Weight processed (tonnes) *"
+              label={t("fields.weightProcessed")}
               type="number" min="0.001" step="0.001"
               value={form.batchWeightTonnes} onChange={set("batchWeightTonnes")}
-              required placeholder="e.g. 50.000"
+              required placeholder={t("fields.weightProcessedPlaceholder")}
             />
             <Field
-              label="Claimed recovery % *"
+              label={t("fields.claimedRecoveryPct")}
               type="number" min="0" max="100" step="0.01"
               value={form.claimedRecoveryPct} onChange={set("claimedRecoveryPct")}
-              required placeholder="e.g. 75"
+              required placeholder={t("fields.claimedRecoveryPctPlaceholder")}
             />
           </Row>
           <Field
-            label="Processing date *"
+            label={t("fields.processingDate")}
             type="date"
             value={form.processingDate} onChange={set("processingDate")}
             required
@@ -203,7 +204,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
         )}
 
         <Button type="submit" variant="primary" loading={loading} className="w-full">
-          Check batch plausibility →
+          {t("submit")}
         </Button>
       </form>
     </Card>

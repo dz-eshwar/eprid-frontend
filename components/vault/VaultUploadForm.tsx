@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Upload, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -33,6 +34,7 @@ export function VaultUploadForm({
   recyclerId, consentAcceptedAt, token, onUploaded,
   docTypes, lockedDocType, onCancel, compact,
 }: Props) {
+  const t = useTranslations("vault.upload");
   const types = docTypes ?? FALLBACK_TYPES;
 
   const [phase, setPhase] = useState<Phase>("form");
@@ -71,7 +73,7 @@ export function VaultUploadForm({
       setPhase("success");
       resetForm();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+      setError(err instanceof Error ? err.message : t("uploadFailed"));
     } finally {
       setLoading(false);
     }
@@ -82,7 +84,7 @@ export function VaultUploadForm({
       <div className="flex items-start gap-3">
         <CheckCircle2 className="h-5 w-5 text-[#0F6E56] shrink-0 mt-0.5" />
         <div>
-          <p className="font-medium text-[#444441] text-sm">{lastDoc.displayName} uploaded</p>
+          <p className="font-medium text-[#444441] text-sm">{t("uploaded", { name: lastDoc.displayName })}</p>
           <p className="text-xs text-[#444441]/50 mt-0.5">
             {VAULT_DOC_TYPE_LABELS[lastDoc.docType]} · {(lastDoc.fileSizeBytes / 1024).toFixed(0)} KB
           </p>
@@ -94,7 +96,7 @@ export function VaultUploadForm({
         className="flex items-center gap-2"
       >
         <Upload className="h-4 w-4" />
-        Add another document
+        {t("addAnother")}
       </Button>
     </div>
   );
@@ -103,7 +105,7 @@ export function VaultUploadForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       {!lockedDocType && (
         <div>
-          <label className="block text-sm font-medium text-[#444441] mb-1.5">Document type</label>
+          <label className="block text-sm font-medium text-[#444441] mb-1.5">{t("documentType")}</label>
           <select
             value={docType}
             onChange={(e) => setDocType(e.target.value as VaultDocType)}
@@ -118,20 +120,20 @@ export function VaultUploadForm({
 
       <div>
         <label className="block text-sm font-medium text-[#444441] mb-1.5">
-          Display name <span className="font-normal text-[#444441]/50">(optional — defaults to filename)</span>
+          {t("displayName")} <span className="font-normal text-[#444441]/50">{t("displayNameOptional")}</span>
         </label>
         <input
           type="text"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          placeholder="e.g. BWMR Reg Cert 2024"
+          placeholder={t("displayNamePlaceholder")}
           className="w-full rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium text-[#444441] mb-1.5">
-          File <span className="text-[#A32D2D]">*</span>
+          {t("file")} <span className="text-[#A32D2D]">*</span>
         </label>
         <input
           id="vault-file"
@@ -141,18 +143,18 @@ export function VaultUploadForm({
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
           className="w-full text-sm text-[#444441]/70 file:mr-3 file:rounded-md file:border-0 file:bg-[#0F6E56] file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:opacity-90"
         />
-        <p className="mt-1 text-xs text-[#444441]/40">JPEG, PNG, WebP, TIFF, PDF · max 20 MB</p>
+        <p className="mt-1 text-xs text-[#444441]/40">{t("fileHint")}</p>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-[#444441] mb-1.5">
-          Notes <span className="font-normal text-[#444441]/50">(optional)</span>
+          {t("notes")} <span className="font-normal text-[#444441]/50">{t("notesOptional")}</span>
         </label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
-          placeholder="Any reference notes for your own use"
+          placeholder={t("notesPlaceholder")}
           className="w-full rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56] resize-none"
         />
       </div>
@@ -166,11 +168,11 @@ export function VaultUploadForm({
       <div className="flex items-center gap-3">
         <Button type="submit" variant="primary" loading={loading} disabled={!file} className="flex items-center gap-2">
           <Upload className="h-4 w-4" />
-          Upload document
+          {t("uploadDocument")}
         </Button>
         {onCancel && (
           <button type="button" onClick={onCancel} className="text-sm text-[#444441]/50 hover:text-[#444441] transition-colors">
-            Cancel
+            {t("cancel")}
           </button>
         )}
       </div>
@@ -186,8 +188,8 @@ export function VaultUploadForm({
       <CardHeader>
         <CardTitle>
           {lockedDocType
-            ? `Upload ${VAULT_DOC_TYPE_LABELS[lockedDocType]}`
-            : phase === "success" ? "Document uploaded" : "Upload a document"}
+            ? t("uploadTitleLocked", { type: VAULT_DOC_TYPE_LABELS[lockedDocType] })
+            : phase === "success" ? t("uploadedTitle") : t("uploadTitle")}
         </CardTitle>
       </CardHeader>
       {body}

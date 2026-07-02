@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Download, Trash2, FileText } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { deleteDoc, downloadDoc } from "@/lib/api/vault";
@@ -13,18 +14,20 @@ interface Props {
 }
 
 export function VaultDocList({ docs, token, onDeleted }: Props) {
+  const t = useTranslations("vault.docList");
+  const locale = useLocale();
   const [downloading, setDownloading] = useState<string | null>(null);
 
   if (docs.length === 0) {
     return (
       <div className="text-center py-10 text-[#444441]/40 text-sm">
-        No documents uploaded yet.
+        {t("empty")}
       </div>
     );
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Remove this document from the vault?")) return;
+    if (!confirm(t("confirmDelete"))) return;
     await deleteDoc(id, token);
     onDeleted(id);
   }
@@ -34,7 +37,7 @@ export function VaultDocList({ docs, token, onDeleted }: Props) {
     try {
       await downloadDoc(doc.id, doc.fileName, token);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Download failed");
+      alert(err instanceof Error ? err.message : t("downloadFailed"));
     } finally {
       setDownloading(null);
     }
@@ -56,7 +59,13 @@ export function VaultDocList({ docs, token, onDeleted }: Props) {
               <p className="text-xs text-[#444441]/50 mt-1 italic">{doc.notes}</p>
             )}
             <p className="text-xs text-[#444441]/30 mt-1">
-              Uploaded {new Date(doc.uploadedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+              {t("uploadedOn", {
+                date: new Date(doc.uploadedAt).toLocaleDateString(`${locale}-IN`, {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                }),
+              })}
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -64,14 +73,14 @@ export function VaultDocList({ docs, token, onDeleted }: Props) {
               onClick={() => handleDownload(doc)}
               disabled={downloading === doc.id}
               className="p-1.5 rounded-md text-[#444441]/40 hover:text-[#0F6E56] hover:bg-[#0F6E56]/5 transition-colors disabled:opacity-40"
-              title="Download"
+              title={t("download")}
             >
               <Download className={`h-4 w-4 ${downloading === doc.id ? "animate-pulse" : ""}`} />
             </button>
             <button
               onClick={() => handleDelete(doc.id)}
               className="p-1.5 rounded-md text-[#444441]/40 hover:text-[#A32D2D] hover:bg-[#A32D2D]/5 transition-colors"
-              title="Remove"
+              title={t("remove")}
             >
               <Trash2 className="h-4 w-4" />
             </button>
