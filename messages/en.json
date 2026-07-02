@@ -9,7 +9,7 @@
       "howItWorks": "How it works",
       "forProducers": "For Producers",
       "forConsultancies": "For Consultancies",
-      "getEarlyAccess": "Get Early Access",
+      "tryNow": "Try it now",
       "toggleMenu": "Toggle menu"
     },
     "hero": {
@@ -63,14 +63,10 @@
         }
       }
     },
-    "earlyAccess": {
-      "heading": "Get early access",
-      "body": "We're onboarding a small group of compliance consultancies and producers for the pilot. No commitment — just a risk check on the recycler of your choice.",
-      "emailPlaceholder": "your@email.com",
-      "sending": "Sending…",
-      "requestAccess": "Request Access",
-      "submittedMessage": "We'll be in touch. Watch your inbox.",
-      "errorGeneric": "Something went wrong. Email us directly: sake.winz@gmail.com"
+    "getStarted": {
+      "heading": "Ready to check a recycler?",
+      "body": "Run a risk check on any recycler or certificate before you buy. Sign up and get your first report in minutes.",
+      "cta": "Go ahead and try"
     },
     "footer": {
       "title": "E-PRid — EPR Certificate Verification",

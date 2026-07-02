@@ -72,12 +72,12 @@ function LandingNavbar() {
           <a href="#who-its-for" className="hover:text-[#0F6E56] transition-colors">
             {t("forConsultancies")}
           </a>
-          <a
-            href="#early-access"
+          <Link
+            href="/register"
             className="bg-[#D85A30] text-white px-4 py-2 rounded-md hover:opacity-90 transition-opacity font-semibold"
           >
-            {t("getEarlyAccess")}
-          </a>
+            {t("tryNow")}
+          </Link>
           {languageSelect}
         </div>
 
@@ -106,13 +106,13 @@ function LandingNavbar() {
           <a href="#who-its-for" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
             {t("forConsultancies")}
           </a>
-          <a
-            href="#early-access"
+          <Link
+            href="/register"
             onClick={() => setMenuOpen(false)}
             className="bg-[#D85A30] text-white px-4 py-2.5 rounded-md text-center font-semibold hover:opacity-90 transition-opacity"
           >
-            {t("getEarlyAccess")}
-          </a>
+            {t("tryNow")}
+          </Link>
         </div>
       )}
     </nav>
@@ -287,72 +287,25 @@ function WhoItsForSection() {
   );
 }
 
-// ─── Early access ─────────────────────────────────────────────────────────────
+// ─── Get started ──────────────────────────────────────────────────────────────
 
-function EarlyAccessSection() {
-  const t = useTranslations("landing.earlyAccess");
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      if (!res.ok) throw new Error("Request failed");
-      setSubmitted(true);
-    } catch {
-      setError(t("errorGeneric"));
-    } finally {
-      setLoading(false);
-    }
-  }
+function GetStartedSection() {
+  const t = useTranslations("landing.getStarted");
 
   return (
-    <section id="early-access" className="bg-[#111827] py-20">
+    <section id="get-started" className="bg-[#111827] py-20">
       <div className="max-w-2xl mx-auto px-6 text-center">
         <h2 className="text-3xl font-bold text-white mb-4">{t("heading")}</h2>
         <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-lg mx-auto">
           {t("body")}
         </p>
 
-        {submitted ? (
-          <div className="inline-flex items-center gap-2 bg-[#0F6E56]/20 text-[#0F6E56] border border-[#0F6E56]/30 rounded-lg px-6 py-4 text-sm font-medium">
-            <CheckCircle2 className="h-5 w-5 shrink-0" />
-            {t("submittedMessage")}
-          </div>
-        ) : (
-          <>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("emailPlaceholder")}
-                className="flex-1 rounded-md border border-white/15 bg-white/5 text-white placeholder-white/30 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-[#D85A30] text-white px-6 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 whitespace-nowrap"
-              >
-                {loading ? t("sending") : t("requestAccess")}
-              </button>
-            </form>
-            {error && (
-              <p className="mt-4 text-sm text-red-400">{error}</p>
-            )}
-          </>
-        )}
+        <Link
+          href="/register"
+          className="inline-block bg-[#D85A30] text-white px-7 py-3 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity"
+        >
+          {t("cta")}
+        </Link>
       </div>
     </section>
   );
@@ -397,7 +350,7 @@ export function LandingPage() {
       <ProblemBar />
       <HowItWorksSection />
       <WhoItsForSection />
-      <EarlyAccessSection />
+      <GetStartedSection />
       <Footer />
     </div>
   );
