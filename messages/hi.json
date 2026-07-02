@@ -167,6 +167,7 @@
     "results": {
       "heading": "सत्यापन परिणाम",
       "downloadPdf": "PDF डाउनलोड करें",
+      "downloading": "डाउनलोड हो रहा है…",
       "batchPlausibility": "बैच प्रशंसनीयता",
       "documentForensics": "दस्तावेज़ फ़ोरेंसिक्स",
       "regulatoryHistory": "नियामक इतिहास"

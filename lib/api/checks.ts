@@ -47,3 +47,19 @@ export const uploadEvidence = (
     token
   );
 };
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+
+export async function downloadReport(checkId: string, token: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/v1/checks/${checkId}/report`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`Download failed (${res.status})`);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `eprid-report-${checkId}.pdf`;
+  a.click();
+  URL.revokeObjectURL(url);
+}

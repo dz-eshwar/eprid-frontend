@@ -167,6 +167,7 @@
     "results": {
       "heading": "Verification results",
       "downloadPdf": "Download PDF",
+      "downloading": "Downloading…",
       "batchPlausibility": "Batch plausibility",
       "documentForensics": "Document forensics",
       "regulatoryHistory": "Regulatory history"

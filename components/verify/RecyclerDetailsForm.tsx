@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { PlausibilityResults } from "./PlausibilityResults";
+import { useAuth } from "@/lib/auth/AuthContext";
 import type { CreateCheckRequest, VerificationCheckResponse } from "@/lib/api/types";
 import { createCheck } from "@/lib/api/checks";
 
@@ -16,6 +17,11 @@ interface Props {
 
 export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
   const t = useTranslations("recyclerDetailsForm");
+  const { user } = useAuth();
+  // PUBLISHER = self-service producer checking a recycler on their own behalf — the
+  // producer *is* the logged-in user, so don't ask them to re-enter their own details.
+  // CONSULTANT (and other roles) work across multiple producer clients and must name one.
+  const showProducerFields = user?.role !== "PUBLISHER";
   const [form, setForm] = useState({
     recyclerName: "",
     bwmrRegNumber: "",
@@ -49,8 +55,8 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
         recyclerSelfReportedCapacityT: form.recyclerSelfReportedCapacityT
           ? parseFloat(form.recyclerSelfReportedCapacityT)
           : undefined,
-        producerName: form.producerName,
-        cpcbRegNumber: form.cpcbRegNumber || undefined,
+        producerName: showProducerFields ? form.producerName : (user?.fullName ?? ""),
+        cpcbRegNumber: showProducerFields ? (form.cpcbRegNumber || undefined) : undefined,
         batchWeightTonnes: parseFloat(form.batchWeightTonnes),
         claimedRecoveryPct: parseFloat(form.claimedRecoveryPct),
         processingDate: form.processingDate,
@@ -153,23 +159,25 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
           </Row>
         </fieldset>
 
-        <fieldset className="space-y-4">
-          <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
-            {t("sectionProducer")}
-          </legend>
-          <Row>
-            <Field
-              label={t("fields.producerName")}
-              value={form.producerName} onChange={set("producerName")}
-              required placeholder={t("fields.producerNamePlaceholder")}
-            />
-            <Field
-              label={t("fields.cpcbRegNumber")}
-              value={form.cpcbRegNumber} onChange={set("cpcbRegNumber")}
-              placeholder={t("fields.cpcbRegNumberPlaceholder")}
-            />
-          </Row>
-        </fieldset>
+        {showProducerFields && (
+          <fieldset className="space-y-4">
+            <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
+              {t("sectionProducer")}
+            </legend>
+            <Row>
+              <Field
+                label={t("fields.producerName")}
+                value={form.producerName} onChange={set("producerName")}
+                required placeholder={t("fields.producerNamePlaceholder")}
+              />
+              <Field
+                label={t("fields.cpcbRegNumber")}
+                value={form.cpcbRegNumber} onChange={set("cpcbRegNumber")}
+                placeholder={t("fields.cpcbRegNumberPlaceholder")}
+              />
+            </Row>
+          </fieldset>
+        )}
 
         <fieldset className="space-y-4">
           <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">

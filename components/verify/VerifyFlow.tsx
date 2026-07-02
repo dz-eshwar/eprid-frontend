@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { Download, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/auth/AuthContext";
+import { downloadReport } from "@/lib/api/checks";
 import { StepIndicator } from "./StepIndicator";
 import { RecyclerDetailsForm } from "./RecyclerDetailsForm";
 import { EvidenceUpload } from "./EvidenceUpload";
@@ -22,9 +23,11 @@ export function VerifyFlow() {
   const params    = useSearchParams();
   const estimateId = params.get("estimateId") ?? undefined;
 
-  const [step,            setStep]            = useState(0);
-  const [check,           setCheck]           = useState<VerificationCheckResponse | null>(null);
-  const [forensicsResult, setForensicsResult] = useState<EvidenceUploadResponse | null>(null);
+  const [step,             setStep]             = useState(0);
+  const [check,            setCheck]            = useState<VerificationCheckResponse | null>(null);
+  const [forensicsResult,  setForensicsResult]  = useState<EvidenceUploadResponse | null>(null);
+  const [downloading,      setDownloading]      = useState(false);
+  const [downloadError,    setDownloadError]    = useState<string | null>(null);
 
   // Gate: require login
   if (!token) {
@@ -49,6 +52,19 @@ export function VerifyFlow() {
     setCheck(null);
     setForensicsResult(null);
     setStep(0);
+  }
+
+  async function handleDownloadReport() {
+    if (!check || !token) return;
+    setDownloading(true);
+    setDownloadError(null);
+    try {
+      await downloadReport(check.id, token);
+    } catch (err) {
+      setDownloadError(err instanceof Error ? err.message : "Download failed");
+    } finally {
+      setDownloading(false);
+    }
   }
 
   return (
@@ -88,17 +104,19 @@ export function VerifyFlow() {
                 {check.recyclerName} · {check.batchWeightTonnes} T · {check.processingDate}
               </p>
             </div>
-            <a
-              href={`/api/v1/checks/${check.id}/report`}
-              download={`eprid-report-${check.id}.pdf`}
-              className="shrink-0"
+            <Button
+              variant="outline"
+              className="shrink-0 flex items-center gap-1.5 text-xs"
+              onClick={handleDownloadReport}
+              disabled={downloading}
             >
-              <Button variant="outline" className="flex items-center gap-1.5 text-xs">
-                <Download className="h-3.5 w-3.5" />
-                {t("results.downloadPdf")}
-              </Button>
-            </a>
+              <Download className="h-3.5 w-3.5" />
+              {downloading ? t("results.downloading") : t("results.downloadPdf")}
+            </Button>
           </div>
+          {downloadError && (
+            <p className="text-xs text-[#A32D2D]">{downloadError}</p>
+          )}
 
           {/* Plausibility */}
           {check.plausibility && (
