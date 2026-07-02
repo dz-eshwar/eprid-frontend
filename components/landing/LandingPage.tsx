@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { Link, useRouter, usePathname } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 import {
   Search,
   Shield,
@@ -21,7 +22,30 @@ import { EPRidMark } from "@/components/branding/EPRidLogo";
 
 function LandingNavbar() {
   const t = useTranslations("landing.nav");
+  const tLang = useTranslations("language");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  function handleLocaleChange(nextLocale: string) {
+    router.replace(pathname, { locale: nextLocale });
+  }
+
+  const languageSelect = (
+    <select
+      aria-label="Language"
+      value={locale}
+      onChange={(e) => handleLocaleChange(e.target.value)}
+      className="bg-black/5 hover:bg-black/10 rounded-md px-2 py-1.5 text-sm font-medium border-none outline-none cursor-pointer text-[#374151] shrink-0"
+    >
+      {routing.locales.map((loc) => (
+        <option key={loc} value={loc}>
+          {tLang(loc)}
+        </option>
+      ))}
+    </select>
+  );
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-black/5 shadow-sm">
@@ -54,16 +78,20 @@ function LandingNavbar() {
           >
             {t("getEarlyAccess")}
           </a>
+          {languageSelect}
         </div>
 
-        {/* Mobile menu toggle */}
-        <button
-          className="md:hidden text-[#374151]"
-          onClick={() => setMenuOpen((o) => !o)}
-          aria-label={t("toggleMenu")}
-        >
-          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile controls */}
+        <div className="flex md:hidden items-center gap-3">
+          {languageSelect}
+          <button
+            className="text-[#374151]"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label={t("toggleMenu")}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
