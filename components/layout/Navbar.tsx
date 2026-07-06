@@ -68,6 +68,9 @@ export function Navbar() {
           <Link href="/vault" className="opacity-90 hover:opacity-100 font-medium">
             {t("vault")}
           </Link>
+          <Link href="/used-oil" className="opacity-90 hover:opacity-100 font-medium">
+            {t("usedOil")}
+          </Link>
 
           {languageSelect}
 
@@ -131,6 +134,9 @@ export function Navbar() {
           )}
           <Link href="/vault" onClick={() => setMenuOpen(false)} className="opacity-90 hover:opacity-100 font-medium">
             {t("vault")}
+          </Link>
+          <Link href="/used-oil" onClick={() => setMenuOpen(false)} className="opacity-90 hover:opacity-100 font-medium">
+            {t("usedOil")}
           </Link>
 
           {user ? (

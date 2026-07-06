@@ -23,6 +23,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
   // CONSULTANT (and other roles) work across multiple producer clients and must name one.
   const showProducerFields = user?.role !== "PUBLISHER";
   const [form, setForm] = useState({
+    wasteStream: "BATTERY",
     recyclerName: "",
     bwmrRegNumber: "",
     recyclerState: "",
@@ -31,8 +32,10 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
     cpcbRegNumber: "",
     batchWeightTonnes: "",
     claimedRecoveryPct: "",
+    claimedOutputQuantity: "",
     processingDate: "",
   });
+  const isTyre = form.wasteStream === "TYRE";
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState<string | null>(null);
   // After submission, hold the check and show plausibility before advancing
@@ -57,8 +60,12 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
           : undefined,
         producerName: showProducerFields ? form.producerName : (user?.fullName ?? ""),
         cpcbRegNumber: showProducerFields ? (form.cpcbRegNumber || undefined) : undefined,
+        wasteStream: form.wasteStream as "BATTERY" | "TYRE",
         batchWeightTonnes: parseFloat(form.batchWeightTonnes),
-        claimedRecoveryPct: parseFloat(form.claimedRecoveryPct),
+        // Tyre checks use claimedOutputQuantity (TPO yield) instead — the DTO still requires
+        // claimedRecoveryPct, so send 0 rather than adding a conditional backend validation.
+        claimedRecoveryPct: isTyre ? 0 : parseFloat(form.claimedRecoveryPct),
+        claimedOutputQuantity: isTyre ? parseFloat(form.claimedOutputQuantity) : undefined,
         processingDate: form.processingDate,
         complianceEstimateId: estimateId || undefined,
       };
@@ -119,6 +126,25 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
       <form onSubmit={handleSubmit} className="space-y-5">
         <fieldset className="space-y-4">
           <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
+            {t("sectionWasteStream")}
+          </legend>
+          <div>
+            <label className="block text-sm font-medium text-[#444441] mb-1.5">
+              {t("fields.wasteStream")}
+            </label>
+            <select
+              value={form.wasteStream}
+              onChange={(e) => setForm((f) => ({ ...f, wasteStream: e.target.value }))}
+              className="w-full rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
+            >
+              <option value="BATTERY">{t("fields.wasteStreamBattery")}</option>
+              <option value="TYRE">{t("fields.wasteStreamTyre")}</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset className="space-y-4">
+          <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
             {t("sectionRecycler")}
           </legend>
           <Row>
@@ -128,7 +154,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
               required placeholder={t("fields.recyclerNamePlaceholder")}
             />
             <Field
-              label={t("fields.bwmrRegNumber")}
+              label={isTyre ? t("fields.tyreRegNumber") : t("fields.bwmrRegNumber")}
               value={form.bwmrRegNumber} onChange={set("bwmrRegNumber")}
               placeholder={t("fields.bwmrRegNumberPlaceholder")}
             />
@@ -190,12 +216,21 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
               value={form.batchWeightTonnes} onChange={set("batchWeightTonnes")}
               required placeholder={t("fields.weightProcessedPlaceholder")}
             />
-            <Field
-              label={t("fields.claimedRecoveryPct")}
-              type="number" min="0" max="100" step="0.01"
-              value={form.claimedRecoveryPct} onChange={set("claimedRecoveryPct")}
-              required placeholder={t("fields.claimedRecoveryPctPlaceholder")}
-            />
+            {isTyre ? (
+              <Field
+                label={t("fields.claimedOutputQuantity")}
+                type="number" min="0" step="0.001"
+                value={form.claimedOutputQuantity} onChange={set("claimedOutputQuantity")}
+                required placeholder={t("fields.claimedOutputQuantityPlaceholder")}
+              />
+            ) : (
+              <Field
+                label={t("fields.claimedRecoveryPct")}
+                type="number" min="0" max="100" step="0.01"
+                value={form.claimedRecoveryPct} onChange={set("claimedRecoveryPct")}
+                required placeholder={t("fields.claimedRecoveryPctPlaceholder")}
+              />
+            )}
           </Row>
           <Field
             label={t("fields.processingDate")}

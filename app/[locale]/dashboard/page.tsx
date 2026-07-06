@@ -11,6 +11,7 @@ import { listChecks } from "@/lib/api/checks";
 import { listMyDocs } from "@/lib/api/vault";
 import type { VerificationCheckResponse, VaultDocument } from "@/lib/api/types";
 import { cn } from "@/lib/utils";
+import { CredentialChecksCard } from "@/components/recycler/CredentialChecksCard";
 
 export default function DashboardPage() {
   const { user, token } = useAuth();
@@ -214,6 +215,8 @@ function RecyclerDashboard() {
           </table>
         )}
       </Card>
+
+      <CredentialChecksCard />
     </div>
   );
 }

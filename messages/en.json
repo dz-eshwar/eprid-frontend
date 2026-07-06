@@ -1,34 +1,65 @@
 {
   "landing": {
     "meta": {
-      "title": "E-PRid — Battery EPR Certificate Verification",
-      "description": "Risk scores on every recycler and certificate before you buy. Built for BWMR 2022 compliance."
+      "title": "E-PRid — EPR Certificate Verification for Battery, Tyre & Used Oil",
+      "description": "Risk scores on every recycler and certificate before you buy, plus a guided registration assistant for used-oil collection agents. Covering battery, tyre, and used-oil EPR in India."
     },
     "nav": {
-      "tagline": "Battery EPR Verification",
+      "tagline": "EPR Verification & Compliance",
       "howItWorks": "How it works",
       "forProducers": "For Producers",
       "forConsultancies": "For Consultancies",
+      "usedOil": "Used-Oil Registration",
       "tryNow": "Try it now",
       "toggleMenu": "Toggle menu"
     },
     "hero": {
-      "badge": "Built for BWMR 2022 compliance",
+      "badge": "Battery, Tyre & Used-Oil EPR",
       "titleLine1": "Know if your EPR certificate is real",
       "titleLine2": "before you file.",
-      "body": "India's plastic EPR system saw ₹700Cr+ in fraudulent certificates before anyone caught it. Battery EPR is next. E-PRid gives producers, PROs, and compliance consultancies a risk score on every recycler and certificate — before they buy.",
+      "body": "India's plastic EPR system saw ₹700Cr+ in fraudulent certificates before anyone caught it. Battery and tyre EPR run the same certificate architecture. E-PRid gives producers, PROs, and compliance consultancies a risk score on every recycler and certificate before they buy — plus a guided registration assistant for used-oil collection agents navigating CPCB's sign-up process.",
       "ctaPrimary": "Run a Risk Check",
       "ctaSecondary": "See how it works",
-      "footnote": "Built for India's Battery Waste Management Rules, 2022"
+      "footnote": "Covering Battery, Tyre, and Used-Oil EPR under India's Hazardous & Other Waste Rules"
     },
     "stats": {
-      "recyclers": { "stat": "520+", "desc": "Registered battery recyclers — with no independent verification layer" },
-      "fraud": { "stat": "₹700Cr+", "desc": "Fraudulent plastic EPR certs undetected. Battery EPR uses the same architecture." },
-      "deadline": { "stat": "June 30", "desc": "Annual return deadline — with no way to verify what you're filing" }
+      "recyclers": {
+        "stat": "520+",
+        "desc": "Registered battery recyclers — with no independent verification layer"
+      },
+      "fraud": {
+        "stat": "₹700Cr+",
+        "desc": "Fraudulent plastic EPR certs undetected. Battery and tyre EPR use the same architecture."
+      },
+      "deadline": {
+        "stat": "June 30",
+        "desc": "Annual return deadline — with no way to verify what you're filing"
+      }
+    },
+    "streams": {
+      "heading": "Three waste streams, one verification layer",
+      "subheading": "Battery and tyre get an independent risk-check. Used-oil gets something different: help getting into the system in the first place.",
+      "items": {
+        "battery": {
+          "title": "Battery EPR",
+          "body": "Risk-check any recycler or certificate — document forensics, capacity plausibility, and regulatory history — before you buy.",
+          "cta": "Run a risk check"
+        },
+        "tyre": {
+          "title": "Tyre / TPO EPR",
+          "body": "The same independent risk-check, applied to tyre recyclers and their claimed Tyre Pyrolysis Oil output.",
+          "cta": "Run a risk check"
+        },
+        "usedOil": {
+          "title": "Used-Oil EPR",
+          "body": "A guided assistant for CPCB's CA-1/CA-2 collection-agent registration — most applications stall in paperwork, not rejection. We help you get it right the first time.",
+          "cta": "Start the assistant"
+        }
+      }
     },
     "howItWorks": {
       "heading": "How it works",
-      "subheading": "Three checks, one report. Designed to be completed before a certificate purchase, not after.",
+      "subheading": "Three checks, one report — for battery and tyre recyclers. Designed to be completed before a certificate purchase, not after.",
       "steps": {
         "submit": {
           "title": "Submit recycler name or certificate ID",
@@ -55,7 +86,7 @@
         },
         "producers": {
           "title": "Producers & EV OEMs",
-          "body": "Your EPR obligation doesn't end at buying a certificate. If the recycler behind it is fraudulent, the liability lands on you. Verify before you file."
+          "body": "Your EPR obligation doesn't end at buying a certificate — for battery or tyre. If the recycler behind it is fraudulent, the liability lands on you. Verify before you file."
         },
         "recyclers": {
           "title": "Recyclers",
@@ -70,17 +101,18 @@
     },
     "footer": {
       "title": "E-PRid — EPR Certificate Verification",
-      "subtitle": "Built for India's Battery Waste Management Rules, 2022",
+      "subtitle": "Covering Battery, Tyre & Used-Oil EPR compliance in India",
       "privacyPolicy": "Privacy Policy",
       "termsOfService": "Terms of Service",
       "login": "Log in"
     }
   },
   "nav": {
-    "tagline": "Battery EPR Verification",
+    "tagline": "EPR Verification & Compliance",
     "calculator": "Calculator",
     "verify": "Verify",
     "vault": "Vault",
+    "usedOil": "Used Oil",
     "dashboard": "Dashboard",
     "login": "Log in",
     "signup": "Sign up",

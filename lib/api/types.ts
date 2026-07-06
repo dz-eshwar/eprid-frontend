@@ -58,6 +58,12 @@ export interface RegisterRequest {
   password: string;
   fullName: string;
   role?: UserRole;
+  // Module A0 — optional recycler KYC fields, all optional. Helps verify the account faster
+  // but never blocks registration.
+  gstin?: string;
+  legalName?: string;
+  udyamNumber?: string;
+  cinOrDin?: string;
 }
 
 export interface LoginRequest {
@@ -73,6 +79,10 @@ export interface AuthResponse {
   role: string;
 }
 
+// ─── Waste stream (Module D) ──────────────────────────────────────────────────
+
+export type WasteStreamType = "BATTERY" | "TYRE" | "USED_OIL";
+
 // ─── Verification Checks ─────────────────────────────────────────────────────
 
 export type CheckStatus = "PENDING" | "RUNNING" | "COMPLETE" | "FAILED";
@@ -85,8 +95,10 @@ export interface CreateCheckRequest {
   recyclerSelfReportedCapacityT?: number;
   producerName: string;
   cpcbRegNumber?: string;
+  wasteStream?: WasteStreamType; // defaults to BATTERY server-side
   batchWeightTonnes: number;
   claimedRecoveryPct: number;
+  claimedOutputQuantity?: number; // tyre only: claimed TPO output in litres
   processingDate: string; // ISO date string "YYYY-MM-DD"
   complianceEstimateId?: string;
 }
@@ -144,8 +156,10 @@ export interface VerificationCheckResponse {
   recyclerId: string;
   producerName: string;
   producerId: string;
+  wasteStream: WasteStreamType;
   batchWeightTonnes: number;
   claimedRecoveryPct: number;
+  claimedOutputQuantity: number | null;
   processingDate: string;
   status: CheckStatus;
   riskRating: RiskRating | null;
@@ -268,4 +282,113 @@ export interface RecyclerSummary {
   name: string;
   bwmrRegNumber: string | null;
   state: string | null;
+}
+
+// ─── Used Oil (Module E) ──────────────────────────────────────────────────────
+
+export type UsedOilTier = "CA_1" | "CA_2";
+
+export interface TierDeterminationRequest {
+  hasStorageFacility: boolean;
+  hasTruckFleet: boolean;
+}
+
+export interface TierDeterminationResponse {
+  tier: UsedOilTier;
+  rationale: string;
+}
+
+export interface Ca1PrerequisiteCheckRequest {
+  hasSignedAgreementWithCa2OrRecycler: boolean;
+}
+
+export interface Ca1PrerequisiteCheckResponse {
+  canProceed: boolean;
+  message: string;
+  requiredAgreementContents: string[];
+}
+
+export interface ReadinessChecklistItem {
+  label: string;
+  description: string;
+}
+
+export interface Ca2ReadinessChecklistResponse {
+  items: ReadinessChecklistItem[];
+}
+
+export interface FeeCalculationRequest {
+  avgAnnualQuantityMt: number;
+}
+
+export interface FeeCalculationResponse {
+  registrationFeeRs: number;
+  annualProcessingChargeRs: number;
+  totalFirstYearRs: number;
+  tierLabel: string;
+}
+
+export interface Ca1FormChecklistResponse {
+  sections: string[];
+  agreementUploadNote: string;
+  maxAgreementFileSizeMb: number;
+}
+
+export interface Ca1ApplicationDetails {
+  authorizedPersonName?: string;
+  authorizedPersonDesignation?: string;
+  authorizedPersonMobile?: string;
+  authorizedPersonEmail?: string;
+  vehicleRegistrationNumber?: string;
+  vehicleType?: string;
+  vehicleCapacityKl?: number;
+  collectionAreas?: string;
+  estimatedMonthlyCollectionKl?: number;
+}
+
+export interface Ca2ApplicationDetails {
+  authorizedPersonName?: string;
+  authorizedPersonDesignation?: string;
+  authorizedPersonMobile?: string;
+  authorizedPersonEmail?: string;
+  storageFacilityAddress?: string;
+  storageCapacityKl?: number;
+  gstNumber?: string;
+  labFacilityDetails?: string;
+  attachedCa1sOrRecyclers?: string;
+}
+
+export interface UsedOilSummaryRequest {
+  tier: UsedOilTier;
+  avgAnnualQuantityMt: number;
+  ca1PrerequisiteMet?: boolean | null;
+  ca1ApplicationDetails?: Ca1ApplicationDetails;
+  ca2ApplicationDetails?: Ca2ApplicationDetails;
+}
+
+export interface UsedOilSummaryResponse {
+  tier: UsedOilTier;
+  feeBreakdown: FeeCalculationResponse;
+  prerequisitesMet: string[];
+  prerequisitesOutstanding: string[];
+  nextStep: string;
+  disclaimer: string;
+}
+
+// ─── Credential/KYC checks (Module A0) ────────────────────────────────────────
+
+export type CredentialCheckType =
+  | "GST_VERIFICATION"
+  | "GST_OTP_VERIFICATION"
+  | "UDYAM_VERIFICATION"
+  | "MCA_VERIFICATION";
+
+export type CredentialCheckResult = "PASS" | "FAIL" | "COULD_NOT_VERIFY";
+
+export interface CredentialCheckOutcomeDto {
+  checkType: CredentialCheckType;
+  result: CredentialCheckResult;
+  provider: string;
+  reason: string | null;
+  checkedAt: string;
 }

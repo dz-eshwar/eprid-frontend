@@ -77,6 +77,10 @@ export function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<UserRole>("PUBLISHER");
+  const [gstin, setGstin] = useState("");
+  const [legalName, setLegalName] = useState("");
+  const [udyamNumber, setUdyamNumber] = useState("");
+  const [cinOrDin, setCinOrDin] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -85,7 +89,16 @@ export function RegisterForm() {
     setError(null);
     setLoading(true);
     try {
-      const result = await authApi.register({ fullName, email, password, role });
+      const result = await authApi.register({
+        fullName,
+        email,
+        password,
+        role,
+        gstin: role === "RECYCLER" ? (gstin || undefined) : undefined,
+        legalName: role === "RECYCLER" ? (legalName || undefined) : undefined,
+        udyamNumber: role === "RECYCLER" ? (udyamNumber || undefined) : undefined,
+        cinOrDin: role === "RECYCLER" ? (cinOrDin || undefined) : undefined,
+      });
       setAuth(result);
       router.push("/dashboard");
     } catch (err) {
@@ -140,6 +153,18 @@ export function RegisterForm() {
             ))}
           </div>
         </div>
+
+        {role === "RECYCLER" && (
+          <div className="rounded-md border border-black/10 bg-[#F1EFE8] p-3 space-y-3">
+            <p className="text-xs font-semibold text-[#444441]/70">
+              Optional — helps us verify your account faster
+            </p>
+            <Field label="GSTIN" type="text" value={gstin} onChange={setGstin} />
+            <Field label="Legal business name" type="text" value={legalName} onChange={setLegalName} />
+            <Field label="Udyam registration number" type="text" value={udyamNumber} onChange={setUdyamNumber} />
+            <Field label="CIN / DIN (if incorporated)" type="text" value={cinOrDin} onChange={setCinOrDin} />
+          </div>
+        )}
 
         {error && <ErrorMsg>{error}</ErrorMsg>}
         <Button type="submit" variant="primary" loading={loading} className="w-full">

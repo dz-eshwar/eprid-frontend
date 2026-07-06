@@ -15,6 +15,8 @@ import {
   CheckCircle2,
   Menu,
   X,
+  Battery,
+  Droplet,
 } from "lucide-react";
 import { EPRidMark } from "@/components/branding/EPRidLogo";
 
@@ -72,6 +74,9 @@ function LandingNavbar() {
           <a href="#who-its-for" className="hover:text-[#0F6E56] transition-colors">
             {t("forConsultancies")}
           </a>
+          <Link href="/used-oil" className="hover:text-[#0F6E56] transition-colors">
+            {t("usedOil")}
+          </Link>
           <Link
             href="/register"
             className="bg-[#D85A30] text-white px-4 py-2 rounded-md hover:opacity-90 transition-opacity font-semibold"
@@ -106,6 +111,9 @@ function LandingNavbar() {
           <a href="#who-its-for" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
             {t("forConsultancies")}
           </a>
+          <Link href="/used-oil" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
+            {t("usedOil")}
+          </Link>
           <Link
             href="/register"
             onClick={() => setMenuOpen(false)}
@@ -180,6 +188,54 @@ function ProblemBar() {
             <p className="text-sm text-white/70 leading-relaxed">{t(`${key}.desc`)}</p>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+// --- Waste streams ---
+
+const STREAM_KEYS = [
+  { key: "battery", icon: Battery, href: "/verify" },
+  { key: "tyre", icon: Recycle, href: "/verify" },
+  { key: "usedOil", icon: Droplet, href: "/used-oil" },
+] as const;
+
+function StreamsSection() {
+  const t = useTranslations("landing.streams");
+
+  return (
+    <section className="bg-white py-20">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-[#374151] mb-3">{t("heading")}</h2>
+          <p className="text-[#374151]/55 max-w-xl mx-auto text-sm leading-relaxed">
+            {t("subheading")}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {STREAM_KEYS.map(({ key, icon: Icon, href }) => (
+            <div
+              key={key}
+              className="rounded-xl border border-black/8 bg-[#F9FAFB] p-6 flex flex-col gap-4"
+            >
+              <div className="w-10 h-10 rounded-lg bg-[#0F6E56]/10 flex items-center justify-center shrink-0">
+                <Icon className="h-5 w-5 text-[#0F6E56]" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-[#374151] mb-2">{t(`items.${key}.title`)}</h3>
+                <p className="text-sm text-[#374151]/60 leading-relaxed">{t(`items.${key}.body`)}</p>
+              </div>
+              <Link
+                href={href}
+                className="text-sm font-semibold text-[#0F6E56] hover:underline inline-flex items-center gap-1"
+              >
+                {t(`items.${key}.cta`)} <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -348,6 +404,7 @@ export function LandingPage() {
       <LandingNavbar />
       <HeroSection />
       <ProblemBar />
+      <StreamsSection />
       <HowItWorksSection />
       <WhoItsForSection />
       <GetStartedSection />
