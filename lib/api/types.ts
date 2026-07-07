@@ -105,7 +105,7 @@ export const TYRE_END_PRODUCT_LABELS: Record<TyreEndProduct, string> = {
 // ─── Verification Checks ─────────────────────────────────────────────────────
 
 export type CheckStatus = "PENDING" | "RUNNING" | "COMPLETE" | "FAILED";
-export type RiskRating = "LOW" | "MEDIUM" | "HIGH";
+export type RiskRating = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export interface CreateCheckRequest {
   recyclerName: string;
@@ -195,6 +195,20 @@ export interface VerificationCheckResponse {
   regulatoryStatus: RegulatoryStatus;
   regulatoryRisk: RegulatoryRisk | null;
   regulatorySummary: string | null;
+  // Composite risk scoring (§7.1a) — recomputed as plausibility/evidence/regulatory history
+  // each complete, so early in a check's life these reflect signals that haven't run yet
+  compositeScore: number | null;
+  compositeScoreBreakdown: CompositeScoreBreakdown | null;
+  hardDisqualified: boolean;
+  hardDisqualificationReason: string | null;
+}
+
+export interface CompositeScoreBreakdown {
+  registrationSubScore: number | null;
+  capacitySubScore: number | null;
+  invoiceSubScore: number | null;
+  forensicsSubScore: number | null;
+  regulatorySubScore: number | null;
 }
 
 // ─── Forensics ───────────────────────────────────────────────────────────────
@@ -220,6 +234,17 @@ export interface EvidenceUploadResponse {
   checkId: string;
   filesProcessed: number;
   results: FileForensicsResult[];
+}
+
+/** Read-later summary for evidence already uploaded — used when reopening a check outside the
+ *  upload flow. No per-sub-check breakdown, only the joined forensics notes text. */
+export interface EvidenceSummaryDto {
+  evidenceId: string;
+  fileName: string;
+  evidenceType: string;
+  overallStatus: ForensicsStatus;
+  notes: string | null;
+  uploadedAt: string;
 }
 
 // ─── Shared ───────────────────────────────────────────────────────────────────

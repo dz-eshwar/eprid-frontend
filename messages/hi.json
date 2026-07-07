@@ -200,6 +200,7 @@
       "heading": "सत्यापन परिणाम",
       "downloadPdf": "PDF डाउनलोड करें",
       "downloading": "डाउनलोड हो रहा है…",
+      "compositeScore": "Composite risk score",
       "batchPlausibility": "बैच प्रशंसनीयता",
       "documentForensics": "दस्तावेज़ फ़ोरेंसिक्स",
       "regulatoryHistory": "नियामक इतिहास"
@@ -272,6 +273,29 @@
     "checksCount": "{count} जाँच{count, plural, one {} other {ें}}",
     "whatDoesCheckDo": "\"{name}\" जाँच क्या करती है?",
     "startNewCheck": "नई जाँच शुरू करें"
+  },
+  "compositeScore": {
+    "heading": "Composite risk score",
+    "notYetComputed": "Composite score not yet available for this check.",
+    "hardDisqualified": "Hard-disqualified",
+    "breakdownHeading": "Score breakdown by signal",
+    "bandPending": "Pending",
+    "band": {
+      "LOW": "Low risk",
+      "MEDIUM": "Medium risk",
+      "HIGH": "High risk",
+      "CRITICAL": "Critical risk"
+    },
+    "layer": {
+      "registration": "Registration / authorization",
+      "capacity": "Capacity plausibility",
+      "invoice": "Invoice / GST traceability",
+      "forensics": "Document forensics",
+      "regulatory": "Regulatory history"
+    }
+  },
+  "evidenceSummary": {
+    "empty": "No evidence uploaded for this check."
   },
   "plausibilityResults": {
     "heading": "बैच प्रशंसनीयता जाँच",

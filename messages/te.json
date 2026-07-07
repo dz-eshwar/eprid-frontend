@@ -200,6 +200,7 @@
       "heading": "ధృవీకరణ ఫలితాలు",
       "downloadPdf": "PDF డౌన్‌లోడ్ చేయండి",
       "downloading": "డౌన్‌లోడ్ అవుతోంది…",
+      "compositeScore": "Composite risk score",
       "batchPlausibility": "బ్యాచ్ విశ్వసనీయత",
       "documentForensics": "డాక్యుమెంట్ ఫోరెన్సిక్స్",
       "regulatoryHistory": "నియంత్రణ చరిత్ర"
@@ -272,6 +273,29 @@
     "checksCount": "{count} చెక్(లు)",
     "whatDoesCheckDo": "\"{name}\" చెక్ ఏమి చేస్తుంది?",
     "startNewCheck": "కొత్త చెక్ ప్రారంభించండి"
+  },
+  "compositeScore": {
+    "heading": "Composite risk score",
+    "notYetComputed": "Composite score not yet available for this check.",
+    "hardDisqualified": "Hard-disqualified",
+    "breakdownHeading": "Score breakdown by signal",
+    "bandPending": "Pending",
+    "band": {
+      "LOW": "Low risk",
+      "MEDIUM": "Medium risk",
+      "HIGH": "High risk",
+      "CRITICAL": "Critical risk"
+    },
+    "layer": {
+      "registration": "Registration / authorization",
+      "capacity": "Capacity plausibility",
+      "invoice": "Invoice / GST traceability",
+      "forensics": "Document forensics",
+      "regulatory": "Regulatory history"
+    }
+  },
+  "evidenceSummary": {
+    "empty": "No evidence uploaded for this check."
   },
   "plausibilityResults": {
     "heading": "బ్యాచ్ విశ్వసనీయత చెక్",

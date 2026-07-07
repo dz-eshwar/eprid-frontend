@@ -200,6 +200,7 @@
       "heading": "Verification results",
       "downloadPdf": "Download PDF",
       "downloading": "Downloading…",
+      "compositeScore": "Composite risk score",
       "batchPlausibility": "Batch plausibility",
       "documentForensics": "Document forensics",
       "regulatoryHistory": "Regulatory history"
@@ -272,6 +273,29 @@
     "checksCount": "{count} {count, plural, one {check} other {checks}}",
     "whatDoesCheckDo": "What does \"{name}\" check?",
     "startNewCheck": "Start a new check"
+  },
+  "compositeScore": {
+    "heading": "Composite risk score",
+    "notYetComputed": "Composite score not yet available for this check.",
+    "hardDisqualified": "Hard-disqualified",
+    "breakdownHeading": "Score breakdown by signal",
+    "bandPending": "Pending",
+    "band": {
+      "LOW": "Low risk",
+      "MEDIUM": "Medium risk",
+      "HIGH": "High risk",
+      "CRITICAL": "Critical risk"
+    },
+    "layer": {
+      "registration": "Registration / authorization",
+      "capacity": "Capacity plausibility",
+      "invoice": "Invoice / GST traceability",
+      "forensics": "Document forensics",
+      "regulatory": "Regulatory history"
+    }
+  },
+  "evidenceSummary": {
+    "empty": "No evidence uploaded for this check."
   },
   "plausibilityResults": {
     "heading": "Batch plausibility check",

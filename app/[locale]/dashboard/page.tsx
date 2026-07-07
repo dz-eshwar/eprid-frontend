@@ -10,8 +10,8 @@ import { useAuth } from "@/lib/auth/AuthContext";
 import { listChecks } from "@/lib/api/checks";
 import { listMyDocs } from "@/lib/api/vault";
 import type { VerificationCheckResponse, VaultDocument } from "@/lib/api/types";
-import { cn } from "@/lib/utils";
 import { CredentialChecksCard } from "@/components/recycler/CredentialChecksCard";
+import { RiskPill } from "@/components/verify/RiskPill";
 
 export default function DashboardPage() {
   const { user, token } = useAuth();
@@ -34,6 +34,7 @@ export default function DashboardPage() {
 
 function PublisherDashboard() {
   const { user, token } = useAuth();
+  const router = useRouter();
   const [checks, setChecks] = useState<VerificationCheckResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -75,7 +76,7 @@ function PublisherDashboard() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Recent checks</CardTitle>
-            <Link href="/verify" className="text-xs text-[#0F6E56] hover:underline flex items-center gap-1">
+            <Link href="/checks" className="text-xs text-[#0F6E56] hover:underline flex items-center gap-1">
               All checks <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -105,7 +106,11 @@ function PublisherDashboard() {
             </thead>
             <tbody>
               {recent.map((c) => (
-                <tr key={c.id} className="border-b border-black/5 last:border-0 hover:bg-black/[0.02]">
+                <tr
+                  key={c.id}
+                  onClick={() => router.push(`/verify/${c.id}`)}
+                  className="border-b border-black/5 last:border-0 hover:bg-black/[0.02] cursor-pointer"
+                >
                   <td className="py-2.5 pr-4">
                     <span className="font-medium text-[#444441]">{c.recyclerName}</span>
                   </td>
@@ -242,16 +247,3 @@ function QuickAction({ icon, title, desc, href, cta, accent }: {
   );
 }
 
-function RiskPill({ rating }: { rating: string | null }) {
-  if (!rating) return <span className="text-xs text-[#444441]/30">—</span>;
-  const cls = {
-    LOW:    "bg-[#3B6D11]/10 text-[#3B6D11]",
-    MEDIUM: "bg-[#854F0B]/10 text-[#854F0B]",
-    HIGH:   "bg-[#A32D2D]/10 text-[#A32D2D]",
-  }[rating] ?? "bg-black/5 text-[#444441]/50";
-  return (
-    <span className={cn("inline-flex px-2 py-0.5 rounded-full text-xs font-medium", cls)}>
-      {rating}
-    </span>
-  );
-}

@@ -4,16 +4,13 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
-import { Download, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/auth/AuthContext";
-import { downloadReport } from "@/lib/api/checks";
 import { StepIndicator } from "./StepIndicator";
 import { RecyclerDetailsForm } from "./RecyclerDetailsForm";
 import { EvidenceUpload } from "./EvidenceUpload";
-import { ForensicsResults } from "./ForensicsResults";
-import { PlausibilityResults } from "./PlausibilityResults";
-import { RegulatoryHistory } from "./RegulatoryHistory";
+import { CheckResults } from "./CheckResults";
 import type { EvidenceUploadResponse, VerificationCheckResponse } from "@/lib/api/types";
 
 export function VerifyFlow() {
@@ -26,8 +23,6 @@ export function VerifyFlow() {
   const [step,             setStep]             = useState(0);
   const [check,            setCheck]            = useState<VerificationCheckResponse | null>(null);
   const [forensicsResult,  setForensicsResult]  = useState<EvidenceUploadResponse | null>(null);
-  const [downloading,      setDownloading]      = useState(false);
-  const [downloadError,    setDownloadError]    = useState<string | null>(null);
 
   // Gate: require login
   if (!token) {
@@ -52,19 +47,6 @@ export function VerifyFlow() {
     setCheck(null);
     setForensicsResult(null);
     setStep(0);
-  }
-
-  async function handleDownloadReport() {
-    if (!check || !token) return;
-    setDownloading(true);
-    setDownloadError(null);
-    try {
-      await downloadReport(check.id, token);
-    } catch (err) {
-      setDownloadError(err instanceof Error ? err.message : "Download failed");
-    } finally {
-      setDownloading(false);
-    }
   }
 
   return (
@@ -95,59 +77,12 @@ export function VerifyFlow() {
       )}
 
       {step === 2 && forensicsResult && check && (
-        <div className="space-y-6">
-          {/* Header + report download */}
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold text-[#444441]">{t("results.heading")}</h2>
-              <p className="text-sm text-[#444441]/60 mt-0.5">
-                {check.recyclerName} · {check.batchWeightTonnes} T · {check.processingDate}
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              className="shrink-0 flex items-center gap-1.5 text-xs"
-              onClick={handleDownloadReport}
-              disabled={downloading}
-            >
-              <Download className="h-3.5 w-3.5" />
-              {downloading ? t("results.downloading") : t("results.downloadPdf")}
-            </Button>
-          </div>
-          {downloadError && (
-            <p className="text-xs text-[#A32D2D]">{downloadError}</p>
-          )}
-
-          {/* Plausibility */}
-          {check.plausibility && (
-            <section>
-              <h3 className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-3">
-                {t("results.batchPlausibility")}
-              </h3>
-              <PlausibilityResults result={check.plausibility} />
-            </section>
-          )}
-
-          {/* Document forensics */}
-          <section>
-            <h3 className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-3">
-              {t("results.documentForensics")}
-            </h3>
-            <ForensicsResults result={forensicsResult} onRunAnother={reset} />
-          </section>
-
-          {/* Regulatory history — triggered by user, polled async */}
-          <section>
-            <h3 className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-3">
-              {t("results.regulatoryHistory")}
-            </h3>
-            <RegulatoryHistory
-              checkId={check.id}
-              token={token}
-              initialStatus={check.regulatoryStatus}
-            />
-          </section>
-        </div>
+        <CheckResults
+          check={check}
+          token={token}
+          forensicsResult={forensicsResult}
+          onRunAnother={reset}
+        />
       )}
     </div>
   );

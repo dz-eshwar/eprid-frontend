@@ -1,6 +1,7 @@
 import { apiFetch } from "./client";
 import type {
   CreateCheckRequest,
+  EvidenceSummaryDto,
   EvidenceUploadResponse,
   RegulatoryHistoryResponse,
   VerificationCheckResponse,
@@ -47,6 +48,9 @@ export const uploadEvidence = (
     token
   );
 };
+
+export const getEvidenceSummaries = (checkId: string, token: string) =>
+  apiFetch<EvidenceSummaryDto[]>(`/api/v1/checks/${checkId}/evidence`, {}, token);
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
