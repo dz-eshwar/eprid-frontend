@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { PlausibilityResults } from "./PlausibilityResults";
 import { useAuth } from "@/lib/auth/AuthContext";
-import type { CreateCheckRequest, VerificationCheckResponse } from "@/lib/api/types";
+import type { CreateCheckRequest, TyreEndProduct, VerificationCheckResponse } from "@/lib/api/types";
+import { TYRE_END_PRODUCT_LABELS } from "@/lib/api/types";
 import { createCheck } from "@/lib/api/checks";
 
 interface Props {
@@ -33,6 +34,9 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
     batchWeightTonnes: "",
     claimedRecoveryPct: "",
     claimedOutputQuantity: "",
+    tyreEndProduct: "" as TyreEndProduct | "",
+    tyreImported: false,
+    claimedEprCreditKg: "",
     processingDate: "",
   });
   const isTyre = form.wasteStream === "TYRE";
@@ -62,10 +66,14 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
         cpcbRegNumber: showProducerFields ? (form.cpcbRegNumber || undefined) : undefined,
         wasteStream: form.wasteStream as "BATTERY" | "TYRE",
         batchWeightTonnes: parseFloat(form.batchWeightTonnes),
-        // Tyre checks use claimedOutputQuantity (TPO yield) instead — the DTO still requires
-        // claimedRecoveryPct, so send 0 rather than adding a conditional backend validation.
+        // Tyre checks use claimedOutputQuantity/tyreEndProduct/claimedEprCreditKg instead — the
+        // DTO still requires claimedRecoveryPct, so send 0 rather than adding a conditional
+        // backend validation.
         claimedRecoveryPct: isTyre ? 0 : parseFloat(form.claimedRecoveryPct),
         claimedOutputQuantity: isTyre ? parseFloat(form.claimedOutputQuantity) : undefined,
+        tyreEndProduct: isTyre ? (form.tyreEndProduct as TyreEndProduct) : undefined,
+        tyreImported: isTyre ? form.tyreImported : undefined,
+        claimedEprCreditKg: isTyre ? parseFloat(form.claimedEprCreditKg) : undefined,
         processingDate: form.processingDate,
         complianceEstimateId: estimateId || undefined,
       };
@@ -232,6 +240,45 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
               />
             )}
           </Row>
+
+          {isTyre && (
+            <>
+              <Row>
+                <div>
+                  <label className="block text-sm font-medium text-[#444441] mb-1.5">
+                    {t("fields.tyreEndProduct")}
+                  </label>
+                  <select
+                    value={form.tyreEndProduct}
+                    onChange={set("tyreEndProduct")}
+                    required
+                    className="w-full rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
+                  >
+                    <option value="">{t("fields.selectEndProduct")}</option>
+                    {Object.entries(TYRE_END_PRODUCT_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+                <Field
+                  label={t("fields.claimedEprCreditKg")}
+                  type="number" min="0" step="0.001"
+                  value={form.claimedEprCreditKg} onChange={set("claimedEprCreditKg")}
+                  required placeholder={t("fields.claimedEprCreditKgPlaceholder")}
+                />
+              </Row>
+              <label className="flex items-center gap-2 text-sm text-[#444441]">
+                <input
+                  type="checkbox"
+                  checked={form.tyreImported}
+                  onChange={(e) => setForm((f) => ({ ...f, tyreImported: e.target.checked }))}
+                  className="rounded border-black/20 focus:ring-2 focus:ring-[#0F6E56]"
+                />
+                {t("fields.tyreImported")}
+              </label>
+            </>
+          )}
+
           <Field
             label={t("fields.processingDate")}
             type="date"

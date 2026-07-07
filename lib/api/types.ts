@@ -83,6 +83,25 @@ export interface AuthResponse {
 
 export type WasteStreamType = "BATTERY" | "TYRE" | "USED_OIL";
 
+// Tyre EPR certificate-generation formula (QEPR = QP × CF × WP, PRD §7.5) — end-product
+// category selects CF/WP from CPCB's table. Supersedes the earlier TPO-yield-ratio benchmark.
+export type TyreEndProduct =
+  | "CRUMB_RUBBER"
+  | "RECLAIMED_RUBBER"
+  | "CRMB"
+  | "RECOVERED_CARBON_BLACK"
+  | "PYROLYSIS_OIL_CONTINUOUS"
+  | "CHAR_BATCH";
+
+export const TYRE_END_PRODUCT_LABELS: Record<TyreEndProduct, string> = {
+  CRUMB_RUBBER: "Crumb rubber",
+  RECLAIMED_RUBBER: "Reclaimed rubber",
+  CRMB: "Crumb rubber modified bitumen (CRMB)",
+  RECOVERED_CARBON_BLACK: "Recovered carbon black",
+  PYROLYSIS_OIL_CONTINUOUS: "Pyrolysis oil (continuous process)",
+  CHAR_BATCH: "Char (batch process)",
+};
+
 // ─── Verification Checks ─────────────────────────────────────────────────────
 
 export type CheckStatus = "PENDING" | "RUNNING" | "COMPLETE" | "FAILED";
@@ -98,7 +117,10 @@ export interface CreateCheckRequest {
   wasteStream?: WasteStreamType; // defaults to BATTERY server-side
   batchWeightTonnes: number;
   claimedRecoveryPct: number;
-  claimedOutputQuantity?: number; // tyre only: claimed TPO output in litres
+  claimedOutputQuantity?: number; // tyre only: QP, quantity of end-product sold (unit depends on tyreEndProduct)
+  tyreEndProduct?: TyreEndProduct; // tyre only: selects CF/WP from CPCB's table (§7.5)
+  tyreImported?: boolean; // tyre only: true if the underlying waste tyre was imported (forces WP = 1.0)
+  claimedEprCreditKg?: number; // tyre only: claimed EPR certificate credit (kg), reconciled against QEPR = QP × CF × WP
   processingDate: string; // ISO date string "YYYY-MM-DD"
   complianceEstimateId?: string;
 }
@@ -160,6 +182,9 @@ export interface VerificationCheckResponse {
   batchWeightTonnes: number;
   claimedRecoveryPct: number;
   claimedOutputQuantity: number | null;
+  tyreEndProduct: TyreEndProduct | null;
+  tyreImported: boolean;
+  claimedEprCreditKg: number | null;
   processingDate: string;
   status: CheckStatus;
   riskRating: RiskRating | null;
