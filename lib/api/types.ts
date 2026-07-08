@@ -453,7 +453,7 @@ export interface CpcbAuthorizationDto {
   categoryLabel: string;
 }
 
-export type ScoreConfidence = "ENTITY_HEALTH" | "CERTIFICATE_RISK";
+export type ScoreConfidence = "ENTITY_RISK" | "CERTIFICATE_RISK";
 
 export interface CpcbRecyclerScoreDto {
   compositeScore: number;

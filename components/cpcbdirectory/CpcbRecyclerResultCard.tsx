@@ -73,6 +73,7 @@ export function CpcbRecyclerResultCard({ result }: Props) {
               ? <ChevronUp className="h-4 w-4 text-[#444441]/40" />
               : <ChevronDown className="h-4 w-4 text-[#444441]/40" />}
           </button>
+          <p className="text-[10px] text-[#444441]/40 mt-0.5">{t("scoreDirectionNote")}</p>
 
           {expanded && (
             <div className="mt-3 space-y-3 border-t border-black/5 pt-3">

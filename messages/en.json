@@ -213,7 +213,7 @@
     "login": "Log in",
     "signupFree": "Sign up — it's free",
     "title": "CPCB Recycler Directory",
-    "subtitle": "Entity Health Score — registration, authorization, and geographic risk. Not the full Certificate Risk Score (that needs certificate-volume and invoice data this registry doesn't have).",
+    "subtitle": "Entity Risk Score — registration, authorization, and geographic risk. Not the full Certificate Risk Score (that needs certificate-volume and invoice data this registry doesn't have).",
     "cardTitle": "Search recyclers",
     "searchByName": "Recycler name",
     "searchByGst": "GST number",
@@ -223,11 +223,12 @@
     "resultCount": "{count} {count, plural, one {result} other {results}}",
     "noResults": "No recyclers matched your search.",
     "partialCaptureNotice": "Several fields on this record weren't captured together in the same data pass — blanks below are unconfirmed, not verified-absent.",
-    "compositeScore": "Entity Health Score: {score} / 100",
+    "compositeScore": "Entity Risk Score: {score} / 100",
+    "scoreDirectionNote": "Higher the score, higher the risk.",
     "flags": "Flags",
     "unassessed": "Not assessed (missing data)",
     "noIssues": "No flags — all available signals check out.",
-    "scoreConfidenceNote": "Entity Health Score only — does not include certificate-volume or invoice-based risk."
+    "scoreConfidenceNote": "Entity Risk Score only — does not include certificate-volume or invoice-based risk."
   },
   "recyclerDetailsForm": {
     "batchSaved": "Batch details saved",
