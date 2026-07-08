@@ -113,6 +113,7 @@
     "verify": "सत्यापित करें",
     "vault": "वॉल्ट",
     "usedOil": "यूज़्ड ऑयल",
+    "cpcbDirectory": "Recycler Directory",
     "dashboard": "डैशबोर्ड",
     "login": "लॉग इन करें",
     "signup": "साइन अप करें",
@@ -205,6 +206,28 @@
       "documentForensics": "दस्तावेज़ फ़ोरेंसिक्स",
       "regulatoryHistory": "नियामक इतिहास"
     }
+  },
+  "cpcbDirectory": {
+    "signInTitle": "Sign in to search the recycler directory",
+    "signInBody": "Search CPCB's public battery-recycler registry for registration/authorization status before you rely on a certificate.",
+    "login": "लॉग इन करें",
+    "signupFree": "साइन अप करें — यह मुफ़्त है",
+    "title": "CPCB Recycler Directory",
+    "subtitle": "Entity Health Score — registration, authorization, and geographic risk. Not the full Certificate Risk Score (that needs certificate-volume and invoice data this registry doesn't have).",
+    "cardTitle": "Search recyclers",
+    "searchByName": "Recycler name",
+    "searchByGst": "GST number",
+    "searchByState": "State code",
+    "search": "Search",
+    "searchFailed": "Search failed",
+    "resultCount": "{count} {count, plural, one {result} other {results}}",
+    "noResults": "No recyclers matched your search.",
+    "partialCaptureNotice": "Several fields on this record weren't captured together in the same data pass — blanks below are unconfirmed, not verified-absent.",
+    "compositeScore": "Entity Health Score: {score} / 100",
+    "flags": "Flags",
+    "unassessed": "Not assessed (missing data)",
+    "noIssues": "No flags — all available signals check out.",
+    "scoreConfidenceNote": "Entity Health Score only — does not include certificate-volume or invoice-based risk."
   },
   "recyclerDetailsForm": {
     "batchSaved": "बैच विवरण सहेजा गया",

@@ -113,6 +113,7 @@
     "verify": "Verify",
     "vault": "Vault",
     "usedOil": "Used Oil",
+    "cpcbDirectory": "Recycler Directory",
     "dashboard": "Dashboard",
     "login": "Log in",
     "signup": "Sign up",
@@ -205,6 +206,28 @@
       "documentForensics": "Document forensics",
       "regulatoryHistory": "Regulatory history"
     }
+  },
+  "cpcbDirectory": {
+    "signInTitle": "Sign in to search the recycler directory",
+    "signInBody": "Search CPCB's public battery-recycler registry for registration/authorization status before you rely on a certificate.",
+    "login": "Log in",
+    "signupFree": "Sign up — it's free",
+    "title": "CPCB Recycler Directory",
+    "subtitle": "Entity Health Score — registration, authorization, and geographic risk. Not the full Certificate Risk Score (that needs certificate-volume and invoice data this registry doesn't have).",
+    "cardTitle": "Search recyclers",
+    "searchByName": "Recycler name",
+    "searchByGst": "GST number",
+    "searchByState": "State code",
+    "search": "Search",
+    "searchFailed": "Search failed",
+    "resultCount": "{count} {count, plural, one {result} other {results}}",
+    "noResults": "No recyclers matched your search.",
+    "partialCaptureNotice": "Several fields on this record weren't captured together in the same data pass — blanks below are unconfirmed, not verified-absent.",
+    "compositeScore": "Entity Health Score: {score} / 100",
+    "flags": "Flags",
+    "unassessed": "Not assessed (missing data)",
+    "noIssues": "No flags — all available signals check out.",
+    "scoreConfidenceNote": "Entity Health Score only — does not include certificate-volume or invoice-based risk."
   },
   "recyclerDetailsForm": {
     "batchSaved": "Batch details saved",

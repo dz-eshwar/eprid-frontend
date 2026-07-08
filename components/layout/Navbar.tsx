@@ -71,6 +71,11 @@ export function Navbar() {
           <Link href="/used-oil" className="opacity-90 hover:opacity-100 font-medium">
             {t("usedOil")}
           </Link>
+          {user?.role !== "RECYCLER" && (
+            <Link href="/cpcb-directory" className="opacity-90 hover:opacity-100 font-medium">
+              {t("cpcbDirectory")}
+            </Link>
+          )}
 
           {languageSelect}
 
@@ -138,6 +143,11 @@ export function Navbar() {
           <Link href="/used-oil" onClick={() => setMenuOpen(false)} className="opacity-90 hover:opacity-100 font-medium">
             {t("usedOil")}
           </Link>
+          {user?.role !== "RECYCLER" && (
+            <Link href="/cpcb-directory" onClick={() => setMenuOpen(false)} className="opacity-90 hover:opacity-100 font-medium">
+              {t("cpcbDirectory")}
+            </Link>
+          )}
 
           {user ? (
             <>

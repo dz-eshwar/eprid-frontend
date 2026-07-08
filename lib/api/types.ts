@@ -442,3 +442,53 @@ export interface CredentialCheckOutcomeDto {
   reason: string | null;
   checkedAt: string;
 }
+
+// ─── CPCB Recycler Directory (Entity Health Score) ────────────────────────────
+// Public CPCB battery-recycler registry, scored on registration/authorization/geography only —
+// not the full Certificate Risk Score (that needs certificate-volume/invoice data this source
+// doesn't have). See product_document_built_state.md.
+
+export interface CpcbAuthorizationDto {
+  categoryCode: string;
+  categoryLabel: string;
+}
+
+export type ScoreConfidence = "ENTITY_HEALTH" | "CERTIFICATE_RISK";
+
+export interface CpcbRecyclerScoreDto {
+  compositeScore: number;
+  riskBand: RiskRating;
+  flags: string[];
+  unassessed: string[];
+  layerBreakdown: Record<string, unknown>;
+  scoreConfidence: ScoreConfidence;
+  scoredAt: string;
+}
+
+export interface CpcbRecyclerSearchResult {
+  id: string;
+  cpcbId: string | null;
+  recyclerName: string;
+  recyclerAddress: string | null;
+  stateId: string | null;
+  recyclerGstNo: string | null;
+  consentAirExpiry: string | null;
+  consentWaterExpiry: string | null;
+  hwmdValidExpiry: string | null;
+  dicValidExpiry: string | null;
+  recyclingCapacity: number | null;
+  latitude: number | null;
+  longitude: number | null;
+  authorizations: CpcbAuthorizationDto[];
+  dataQualityPartialCapture: boolean;
+  dataQualityNotes: string | null;
+  latestScore: CpcbRecyclerScoreDto | null;
+}
+
+export interface CpcbIngestionSummaryDto {
+  rowsRead: number;
+  rowsUpserted: number;
+  rowsFlaggedPartialCapture: number;
+  rowsMissingSourceId: number;
+  errors: string[];
+}
