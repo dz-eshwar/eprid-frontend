@@ -376,6 +376,10 @@
     "exifExtraction": {
       "what": "The system attempted to read the hidden metadata embedded in this image file.",
       "why": "If extraction fails entirely, it usually means the file is corrupt, in an unexpected format, or the metadata was deliberately stripped. All downstream checks (GPS, timestamp, device) will be unverifiable as a result."
+    },
+    "einvoiceQrOriginality": {
+      "what": "Reads the signed QR code on an invoice (used by government e-invoicing) and verifies its digital signature against the invoice portal's public key — the same cryptographic check used to confirm the invoice was genuinely registered with the government, done offline at no cost.",
+      "why": "A tampered or fake invoice will fail this signature check. Recyclers below the mandatory e-invoicing turnover threshold won't have this QR code at all — that's expected and reported separately, not treated as a red flag."
     }
   }
 }

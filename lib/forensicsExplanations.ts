@@ -13,6 +13,7 @@ const EXPLANATION_KEYS: Array<{ prefix: string; key: string }> = [
   { prefix: "Device identification", key: "deviceIdentification" },
   { prefix: "Reverse image duplicate check", key: "reverseImageDuplicate" },
   { prefix: "EXIF extraction", key: "exifExtraction" },
+  { prefix: "e-invoice QR originality", key: "einvoiceQrOriginality" },
 ];
 
 export function getExplanationKey(checkName: string): string | null {
