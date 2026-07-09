@@ -19,24 +19,21 @@ export function CpcbRecyclerResultCard({ result }: Props) {
 
   return (
     <Card>
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <p className="font-semibold text-[#444441]">{result.recyclerName}</p>
-            {result.cpcbId && (
-              <span className="text-xs text-[#444441]/40">CPCB #{result.cpcbId}</span>
-            )}
-          </div>
-          {result.recyclerAddress && (
-            <p className="text-xs text-[#444441]/60 mt-0.5 flex items-center gap-1">
-              <MapPin className="h-3 w-3 shrink-0" /> {result.recyclerAddress}
-            </p>
-          )}
-          {result.recyclerGstNo && (
-            <p className="text-xs text-[#444441]/40 mt-0.5">GST: {result.recyclerGstNo}</p>
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <p className="font-semibold text-[#444441]">{result.recyclerName}</p>
+          {result.cpcbId && (
+            <span className="text-xs text-[#444441]/40">CPCB #{result.cpcbId}</span>
           )}
         </div>
-        <RiskPill rating={score?.riskBand ?? null} />
+        {result.recyclerAddress && (
+          <p className="text-xs text-[#444441]/60 mt-0.5 flex items-center gap-1">
+            <MapPin className="h-3 w-3 shrink-0" /> {result.recyclerAddress}
+          </p>
+        )}
+        {result.recyclerGstNo && (
+          <p className="text-xs text-[#444441]/40 mt-0.5">GST: {result.recyclerGstNo}</p>
+        )}
       </div>
 
       {result.authorizations.length > 0 && (
@@ -63,11 +60,16 @@ export function CpcbRecyclerResultCard({ result }: Props) {
       {score && (
         <div className="mt-3">
           <button
-            className="w-full flex items-center justify-between text-left"
+            className="w-full flex items-center justify-between text-left gap-2"
             onClick={() => setExpanded((e) => !e)}
           >
-            <span className="text-xs font-medium text-[#444441]/70">
-              {t("compositeScore", { score: score.compositeScore })}
+            <span className="flex items-center gap-3 flex-wrap">
+              <span className="text-xs font-medium text-[#444441]/70 flex items-center gap-1.5">
+                {t("riskLevelLabel")} <RiskPill rating={score.riskBand} />
+              </span>
+              <span className="text-xs font-medium text-[#444441]/70">
+                {t("compositeScore", { score: score.compositeScore })}
+              </span>
             </span>
             {expanded
               ? <ChevronUp className="h-4 w-4 text-[#444441]/40" />

@@ -223,6 +223,7 @@
     "resultCount": "{count} {count, plural, one {result} other {results}}",
     "noResults": "No recyclers matched your search.",
     "partialCaptureNotice": "Several fields on this record weren't captured together in the same data pass — blanks below are unconfirmed, not verified-absent.",
+    "riskLevelLabel": "Entity Risk Level:",
     "compositeScore": "Entity Risk Score: {score} / 100",
     "scoreDirectionNote": "Higher the score, higher the risk.",
     "flags": "Flags",
