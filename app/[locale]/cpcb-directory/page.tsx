@@ -36,7 +36,7 @@ export default function CpcbDirectoryPage() {
     );
   }
 
-  async function handleSearch(params: { name?: string; gst?: string; stateId?: string }) {
+  async function handleSearch(params: { name?: string; gst?: string; state?: string }) {
     setLoading(true);
     setError(null);
     setSearched(true);
@@ -62,7 +62,7 @@ export default function CpcbDirectoryPage() {
         <CardHeader>
           <CardTitle>{t("cardTitle")}</CardTitle>
         </CardHeader>
-        <CpcbRecyclerSearchForm onSearch={handleSearch} loading={loading} />
+        <CpcbRecyclerSearchForm onSearch={handleSearch} loading={loading} token={token} />
       </Card>
 
       {error && (

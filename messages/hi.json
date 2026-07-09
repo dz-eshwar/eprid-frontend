@@ -217,7 +217,7 @@
     "cardTitle": "Search recyclers",
     "searchByName": "Recycler name",
     "searchByGst": "GST number",
-    "searchByState": "State code",
+    "searchByState": "State",
     "search": "Search",
     "searchFailed": "Search failed",
     "resultCount": "{count} {count, plural, one {result} other {results}}",

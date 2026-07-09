@@ -1,27 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
+import { listCpcbStates } from "@/lib/api/cpcbRecyclers";
+import type { CpcbStateDto } from "@/lib/api/types";
 
 interface Props {
-  onSearch: (params: { name?: string; gst?: string; stateId?: string }) => void;
+  onSearch: (params: { name?: string; gst?: string; state?: string }) => void;
   loading: boolean;
+  token: string;
 }
 
-export function CpcbRecyclerSearchForm({ onSearch, loading }: Props) {
+export function CpcbRecyclerSearchForm({ onSearch, loading, token }: Props) {
   const t = useTranslations("cpcbDirectory");
   const [name, setName] = useState("");
   const [gst, setGst] = useState("");
-  const [stateId, setStateId] = useState("");
+  const [state, setState] = useState("");
+  const [states, setStates] = useState<CpcbStateDto[]>([]);
+
+  useEffect(() => {
+    listCpcbStates(token)
+      .then(setStates)
+      .catch(() => setStates([])); // dropdown just stays empty-options; name/GST search still works
+  }, [token]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     onSearch({
       name: name.trim() || undefined,
       gst: gst.trim() || undefined,
-      stateId: stateId.trim() || undefined,
+      state: state || undefined,
     });
   }
 
@@ -39,12 +49,16 @@ export function CpcbRecyclerSearchForm({ onSearch, loading }: Props) {
         placeholder={t("searchByGst")}
         className="rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
       />
-      <input
-        value={stateId}
-        onChange={(e) => setStateId(e.target.value)}
-        placeholder={t("searchByState")}
-        className="rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
-      />
+      <select
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+        className="rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56] text-[#444441]"
+      >
+        <option value="">{t("searchByState")}</option>
+        {states.map((s) => (
+          <option key={s.stateId} value={s.stateName}>{s.stateName}</option>
+        ))}
+      </select>
       <Button type="submit" variant="primary" loading={loading} className="sm:col-span-4 flex items-center justify-center gap-1.5">
         <Search className="h-4 w-4" /> {t("search")}
       </Button>

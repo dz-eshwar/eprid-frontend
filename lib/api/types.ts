@@ -465,12 +465,18 @@ export interface CpcbRecyclerScoreDto {
   scoredAt: string;
 }
 
+export interface CpcbStateDto {
+  stateId: string;
+  stateName: string;
+}
+
 export interface CpcbRecyclerSearchResult {
   id: string;
   cpcbId: string | null;
   recyclerName: string;
   recyclerAddress: string | null;
   stateId: string | null;
+  stateName: string | null;
   recyclerGstNo: string | null;
   consentAirExpiry: string | null;
   consentWaterExpiry: string | null;
