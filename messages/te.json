@@ -203,6 +203,7 @@
       "downloading": "డౌన్‌లోడ్ అవుతోంది…",
       "compositeScore": "Composite risk score",
       "batchPlausibility": "బ్యాచ్ విశ్వసనీయత",
+      "compositionCheck": "Battery composition check",
       "documentForensics": "డాక్యుమెంట్ ఫోరెన్సిక్స్",
       "regulatoryHistory": "నియంత్రణ చరిత్ర"
     }
@@ -243,6 +244,8 @@
     "sectionProducer": "ప్రొడ్యూసర్ (మీ క్లయింట్)",
     "sectionBatch": "క్లెయిమ్ చేస్తున్న బ్యాచ్",
     "sectionWasteStream": "Waste stream",
+    "sectionComposition": "Battery composition (optional)",
+    "compositionHint": "Declaring chemistry and per-metal recovered weight lets us check them against CPCB's published composition ranges. Leave blank to skip.",
     "fields": {
       "wasteStream": "Waste stream",
       "wasteStreamBattery": "Battery",
@@ -256,6 +259,11 @@
       "selectState": "— రాష్ట్రం ఎంచుకోండి —",
       "selfReportedCapacity": "స్వీయ-నివేదిత వార్షిక సామర్థ్యం (టన్నులు)",
       "selfReportedCapacityPlaceholder": "ఉదా. 1200",
+      "recyclerGstNumber": "GST number (optional)",
+      "recyclerGstNumberPlaceholder": "e.g. 27ABCDE1234F1Z5",
+      "declaredBatteryChemistry": "Declared battery chemistry",
+      "selectChemistry": "— Select chemistry —",
+      "metalWeightPlaceholder": "kg",
       "producerName": "ప్రొడ్యూసర్ పేరు *",
       "producerNamePlaceholder": "ఉదా. XYZ Battery Co",
       "cpcbRegNumber": "CPCB రిజిస్ట్రేషన్ నంబర్",
@@ -329,6 +337,16 @@
       "WARN": "కొన్ని బ్యాచ్ వివరాలు అసాధారణంగా ఉన్నాయి — దిగువ కనుగొన్న విషయాలను సమీక్షించండి.",
       "FAIL": "ఒకటి లేదా అంతకంటే ఎక్కువ బ్యాచ్ వివరాలు అవిశ్వసనీయంగా కనిపిస్తున్నాయి — ఈ చెక్ విఫలమైంది.",
       "UNVERIFIABLE": "కొన్ని చెక్‌లను ధృవీకరించలేకపోయాము — అదనపు డేటా అవసరం."
+    }
+  },
+  "compositionResults": {
+    "heading": "Battery composition check",
+    "chemistryImpossible": "chemistry-impossible",
+    "summary": {
+      "PASS": "All claimed metal weights are within the declared chemistry's expected composition range.",
+      "FAIL": "One or more claimed metal weights fall outside the declared chemistry's expected range.",
+      "ZERO_CELL_VIOLATION": "A claimed metal weight is chemistry-impossible for the declared chemistry.",
+      "COULD_NOT_VERIFY": "Some metals expected for this chemistry had no claimed weight submitted."
     }
   },
   "regulatoryHistory": {

@@ -112,6 +112,7 @@ export interface CreateCheckRequest {
   bwmrRegNumber?: string;
   recyclerState?: string;
   recyclerSelfReportedCapacityT?: number;
+  recyclerGstNumber?: string;
   producerName: string;
   cpcbRegNumber?: string;
   wasteStream?: WasteStreamType; // defaults to BATTERY server-side
@@ -121,8 +122,53 @@ export interface CreateCheckRequest {
   tyreEndProduct?: TyreEndProduct; // tyre only: selects CF/WP from CPCB's table (§7.5)
   tyreImported?: boolean; // tyre only: true if the underlying waste tyre was imported (forces WP = 1.0)
   claimedEprCreditKg?: number; // tyre only: claimed EPR certificate credit (kg), reconciled against QEPR = QP × CF × WP
+  declaredBatteryChemistry?: BatteryChemistry; // battery only: drives the composition-table check
+  claimedMetalRecoveries?: ClaimedMetalRecoveryInput[]; // battery only: per-metal claimed weights
+  certificateDate?: string; // ISO date string — falls back to processingDate server-side when omitted
   processingDate: string; // ISO date string "YYYY-MM-DD"
   complianceEstimateId?: string;
+}
+
+// ─── Battery composition check ─────────────────────────────────────────────────
+
+export type BatteryChemistry = "LEAD_ACID" | "LITHIUM_ION" | "ZINC_BASED" | "NICKEL_CADMIUM";
+
+export const BATTERY_CHEMISTRY_LABELS: Record<BatteryChemistry, string> = {
+  LEAD_ACID: "Lead Acid",
+  LITHIUM_ION: "Lithium Ion",
+  ZINC_BASED: "Zinc-based",
+  NICKEL_CADMIUM: "Nickel-Cadmium",
+};
+
+export type BatteryMetal = "PB" | "LI" | "MN" | "ZN" | "NI" | "CO" | "CD" | "AL" | "FE" | "CU";
+
+export const BATTERY_METAL_LABELS: Record<BatteryMetal, string> = {
+  PB: "Lead (Pb)",
+  LI: "Lithium (Li)",
+  MN: "Manganese (Mn)",
+  ZN: "Zinc (Zn)",
+  NI: "Nickel (Ni)",
+  CO: "Cobalt (Co)",
+  CD: "Cadmium (Cd)",
+  AL: "Aluminium (Al)",
+  FE: "Iron (Fe)",
+  CU: "Copper (Cu)",
+};
+
+export interface ClaimedMetalRecoveryInput {
+  metal: BatteryMetal;
+  claimedWeightKg: number;
+}
+
+export type CompositionCheckResult = "PASS" | "FAIL" | "ZERO_CELL_VIOLATION" | "COULD_NOT_VERIFY";
+
+export interface MetalCompositionCheckDto {
+  metal: BatteryMetal;
+  claimedPct: number | null;
+  expectedMin: number;
+  expectedMax: number;
+  result: CompositionCheckResult;
+  detail: string;
 }
 
 // ─── Plausibility ─────────────────────────────────────────────────────────────
@@ -185,6 +231,8 @@ export interface VerificationCheckResponse {
   tyreEndProduct: TyreEndProduct | null;
   tyreImported: boolean;
   claimedEprCreditKg: number | null;
+  declaredBatteryChemistry: BatteryChemistry | null;
+  compositionChecks: MetalCompositionCheckDto[];
   processingDate: string;
   status: CheckStatus;
   riskRating: RiskRating | null;

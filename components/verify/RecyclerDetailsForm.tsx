@@ -5,9 +5,10 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
 import { PlausibilityResults } from "./PlausibilityResults";
+import { CompositionCheckResults } from "./CompositionCheckResults";
 import { useAuth } from "@/lib/auth/AuthContext";
-import type { CreateCheckRequest, TyreEndProduct, VerificationCheckResponse } from "@/lib/api/types";
-import { TYRE_END_PRODUCT_LABELS } from "@/lib/api/types";
+import type { BatteryChemistry, BatteryMetal, CreateCheckRequest, TyreEndProduct, VerificationCheckResponse } from "@/lib/api/types";
+import { BATTERY_CHEMISTRY_LABELS, BATTERY_METAL_LABELS, TYRE_END_PRODUCT_LABELS } from "@/lib/api/types";
 import { createCheck } from "@/lib/api/checks";
 
 interface Props {
@@ -29,6 +30,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
     bwmrRegNumber: "",
     recyclerState: "",
     recyclerSelfReportedCapacityT: "",
+    recyclerGstNumber: "",
     producerName: "",
     cpcbRegNumber: "",
     batchWeightTonnes: "",
@@ -38,6 +40,10 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
     tyreImported: false,
     claimedEprCreditKg: "",
     processingDate: "",
+    declaredBatteryChemistry: "" as BatteryChemistry | "",
+  });
+  const [metalWeights, setMetalWeights] = useState<Record<BatteryMetal, string>>({
+    PB: "", LI: "", MN: "", ZN: "", NI: "", CO: "", CD: "", AL: "", FE: "", CU: "",
   });
   const isTyre = form.wasteStream === "TYRE";
   const [loading, setLoading] = useState(false);
@@ -62,6 +68,7 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
         recyclerSelfReportedCapacityT: form.recyclerSelfReportedCapacityT
           ? parseFloat(form.recyclerSelfReportedCapacityT)
           : undefined,
+        recyclerGstNumber: form.recyclerGstNumber || undefined,
         producerName: showProducerFields ? form.producerName : (user?.fullName ?? ""),
         cpcbRegNumber: showProducerFields ? (form.cpcbRegNumber || undefined) : undefined,
         wasteStream: form.wasteStream as "BATTERY" | "TYRE",
@@ -74,6 +81,14 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
         tyreEndProduct: isTyre ? (form.tyreEndProduct as TyreEndProduct) : undefined,
         tyreImported: isTyre ? form.tyreImported : undefined,
         claimedEprCreditKg: isTyre ? parseFloat(form.claimedEprCreditKg) : undefined,
+        declaredBatteryChemistry: !isTyre && form.declaredBatteryChemistry
+          ? (form.declaredBatteryChemistry as BatteryChemistry)
+          : undefined,
+        claimedMetalRecoveries: !isTyre && form.declaredBatteryChemistry
+          ? (Object.entries(metalWeights)
+              .filter(([, kg]) => kg !== "")
+              .map(([metal, kg]) => ({ metal: metal as BatteryMetal, claimedWeightKg: parseFloat(kg) })))
+          : undefined,
         processingDate: form.processingDate,
         complianceEstimateId: estimateId || undefined,
       };
@@ -103,6 +118,9 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
         </Card>
 
         {plaus && <PlausibilityResults result={plaus} defaultExpanded />}
+        {pending.compositionChecks.length > 0 && (
+          <CompositionCheckResults checks={pending.compositionChecks} defaultExpanded />
+        )}
 
         <div className="flex gap-3">
           <Button variant="outline" onClick={() => setPending(null)} className="flex-1">
@@ -189,6 +207,13 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
               value={form.recyclerSelfReportedCapacityT}
               onChange={set("recyclerSelfReportedCapacityT")}
               placeholder={t("fields.selfReportedCapacityPlaceholder")}
+            />
+          </Row>
+          <Row>
+            <Field
+              label={t("fields.recyclerGstNumber")}
+              value={form.recyclerGstNumber} onChange={set("recyclerGstNumber")}
+              placeholder={t("fields.recyclerGstNumberPlaceholder")}
             />
           </Row>
         </fieldset>
@@ -286,6 +311,49 @@ export function RecyclerDetailsForm({ token, estimateId, onCreated }: Props) {
             required
           />
         </fieldset>
+
+        {!isTyre && (
+          <fieldset className="space-y-4">
+            <legend className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-2">
+              {t("sectionComposition")}
+            </legend>
+            <p className="text-xs text-[#444441]/50 -mt-2">{t("compositionHint")}</p>
+            <div>
+              <label className="block text-sm font-medium text-[#444441] mb-1.5">
+                {t("fields.declaredBatteryChemistry")}
+              </label>
+              <select
+                value={form.declaredBatteryChemistry}
+                onChange={set("declaredBatteryChemistry")}
+                className="w-full rounded-md border border-black/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
+              >
+                <option value="">{t("fields.selectChemistry")}</option>
+                {Object.entries(BATTERY_CHEMISTRY_LABELS).map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+            </div>
+
+            {form.declaredBatteryChemistry && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {(Object.keys(metalWeights) as BatteryMetal[]).map((metal) => (
+                  <div key={metal}>
+                    <label className="block text-xs font-medium text-[#444441]/70 mb-1">
+                      {BATTERY_METAL_LABELS[metal]}
+                    </label>
+                    <input
+                      type="number" min="0" step="0.001"
+                      value={metalWeights[metal]}
+                      onChange={(e) => setMetalWeights((m) => ({ ...m, [metal]: e.target.value }))}
+                      placeholder={t("fields.metalWeightPlaceholder")}
+                      className="w-full rounded-md border border-black/20 bg-white px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0F6E56]"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </fieldset>
+        )}
 
         {error && (
           <p className="text-sm text-[#A32D2D] bg-[#A32D2D]/5 border border-[#A32D2D]/20 rounded-md px-3 py-2">

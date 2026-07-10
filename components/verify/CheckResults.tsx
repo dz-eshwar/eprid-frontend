@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { downloadReport } from "@/lib/api/checks";
 import { CompositeScoreCard } from "./CompositeScoreCard";
 import { PlausibilityResults } from "./PlausibilityResults";
+import { CompositionCheckResults } from "./CompositionCheckResults";
 import { ForensicsResults } from "./ForensicsResults";
 import { EvidenceSummaryList } from "./EvidenceSummaryList";
 import { RegulatoryHistory } from "./RegulatoryHistory";
@@ -86,6 +87,15 @@ export function CheckResults({ check, token, forensicsResult, evidenceSummaries,
             {t("results.batchPlausibility")}
           </h3>
           <PlausibilityResults result={check.plausibility} />
+        </section>
+      )}
+
+      {check.compositionChecks.length > 0 && (
+        <section>
+          <h3 className="text-xs font-semibold text-[#444441]/50 uppercase tracking-wide mb-3">
+            {t("results.compositionCheck")}
+          </h3>
+          <CompositionCheckResults checks={check.compositionChecks} />
         </section>
       )}
 

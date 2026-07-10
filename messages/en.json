@@ -203,6 +203,7 @@
       "downloading": "Downloading…",
       "compositeScore": "Composite risk score",
       "batchPlausibility": "Batch plausibility",
+      "compositionCheck": "Battery composition check",
       "documentForensics": "Document forensics",
       "regulatoryHistory": "Regulatory history"
     }
@@ -243,6 +244,8 @@
     "sectionProducer": "Producer (your client)",
     "sectionBatch": "Batch being claimed",
     "sectionWasteStream": "Waste stream",
+    "sectionComposition": "Battery composition (optional)",
+    "compositionHint": "Declaring chemistry and per-metal recovered weight lets us check them against CPCB's published composition ranges. Leave blank to skip.",
     "fields": {
       "wasteStream": "Waste stream",
       "wasteStreamBattery": "Battery",
@@ -256,6 +259,11 @@
       "selectState": "— Select state —",
       "selfReportedCapacity": "Self-reported annual capacity (tonnes)",
       "selfReportedCapacityPlaceholder": "e.g. 1200",
+      "recyclerGstNumber": "GST number (optional)",
+      "recyclerGstNumberPlaceholder": "e.g. 27ABCDE1234F1Z5",
+      "declaredBatteryChemistry": "Declared battery chemistry",
+      "selectChemistry": "— Select chemistry —",
+      "metalWeightPlaceholder": "kg",
       "producerName": "Producer name *",
       "producerNamePlaceholder": "e.g. XYZ Battery Co",
       "cpcbRegNumber": "CPCB registration number",
@@ -329,6 +337,16 @@
       "WARN": "Some batch details are unusual — review the findings below.",
       "FAIL": "One or more batch details appear implausible — this check has failed.",
       "UNVERIFIABLE": "Some checks could not be verified — additional data is needed."
+    }
+  },
+  "compositionResults": {
+    "heading": "Battery composition check",
+    "chemistryImpossible": "chemistry-impossible",
+    "summary": {
+      "PASS": "All claimed metal weights are within the declared chemistry's expected composition range.",
+      "FAIL": "One or more claimed metal weights fall outside the declared chemistry's expected range.",
+      "ZERO_CELL_VIOLATION": "A claimed metal weight is chemistry-impossible for the declared chemistry.",
+      "COULD_NOT_VERIFY": "Some metals expected for this chemistry had no claimed weight submitted."
     }
   },
   "regulatoryHistory": {
