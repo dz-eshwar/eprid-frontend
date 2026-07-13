@@ -15,7 +15,7 @@ import { calculateEstimate } from "@/lib/api/calculator";
 import { CalculatorResult } from "./CalculatorResult";
 
 export function CalculatorForm() {
-  const [category, setCategory] = useState<BatteryCategory>("PORTABLE");
+  const [category, setCategory] = useState<BatteryCategory>("PORTABLE_RECHARGEABLE");
   const [fy, setFy] = useState<FinancialYear>("2025-26");
   const [placed, setPlaced] = useState("");
   const [fulfilled, setFulfilled] = useState("");

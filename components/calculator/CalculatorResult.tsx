@@ -4,7 +4,12 @@ import { useRouter } from "next/navigation";
 import { AlertTriangle, ArrowRight, Info, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
-import { BATTERY_CATEGORY_LABELS, type ComplianceEstimateResponse, type EcExposureBreakdown } from "@/lib/api/types";
+import {
+  BATTERY_CATEGORY_LABELS,
+  type ComplianceEstimateResponse,
+  type EcExposureBreakdown,
+  type RecycledContentObligation,
+} from "@/lib/api/types";
 import { formatNumber, cn } from "@/lib/utils";
 
 interface Props {
@@ -14,11 +19,46 @@ interface Props {
 export function CalculatorResult({ result }: Props) {
   const router = useRouter();
 
-  const hasShortfall = result.shortfallTonnes > 0;
+  if (!result.applicable) {
+    return (
+      <div className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              {BATTERY_CATEGORY_LABELS[result.batteryCategory]} — FY {result.financialYear}
+            </CardTitle>
+          </CardHeader>
+          <div className="flex gap-2 rounded-md bg-black/5 px-4 py-3">
+            <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#444441]/50" />
+            <p className="text-sm text-[#444441]/80 leading-relaxed">
+              {result.notApplicableReason ??
+                "Schedule II's collection-target cycle for this category has not started for this financial year — there is no mandatory collection target yet."}
+            </p>
+          </div>
+        </Card>
+
+        {result.recycledContentObligation && (
+          <RecycledContentSection obligation={result.recycledContentObligation} />
+        )}
+
+        <div className="flex gap-2 rounded-md bg-black/5 px-4 py-3">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#444441]/50" />
+          <p className="text-xs text-[#444441]/60 leading-relaxed">{result.disclaimer}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Below this point, applicable is true — the backend contract guarantees the target/shortfall
+  // fields are populated (see ComplianceCalculatorService.calculate()).
+  const targetTonnes = result.targetTonnes!;
+  const shortfallTonnes = result.shortfallTonnes!;
+  const shortfallKg = result.shortfallKg!;
+  const hasShortfall = shortfallTonnes > 0;
 
   function handleVerify() {
     // Pass estimateId so Module A pre-populates the certificate volume needed
-    router.push(`/verify?estimateId=${result.estimateId}&volume=${result.shortfallKg}`);
+    router.push(`/verify?estimateId=${result.estimateId}&volume=${shortfallKg}`);
   }
 
   return (
@@ -29,27 +69,50 @@ export function CalculatorResult({ result }: Props) {
           <CardTitle>
             {BATTERY_CATEGORY_LABELS[result.batteryCategory]} — FY {result.financialYear}
           </CardTitle>
+          {result.referenceFinancialYear && (
+            <p className="text-xs text-[#444441]/50 mt-1">
+              Target applies to quantity placed in FY {result.referenceFinancialYear} — used here as a
+              same-year proxy for the FY you entered.
+            </p>
+          )}
         </CardHeader>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <Metric label="Recovery target" value={`${result.recoveryTargetPercent}%`} />
           <Metric
             label="Target (tonnes)"
-            value={formatNumber(result.targetTonnes)}
+            value={formatNumber(targetTonnes)}
           />
           <Metric
             label="Shortfall (tonnes)"
-            value={formatNumber(result.shortfallTonnes)}
+            value={formatNumber(shortfallTonnes)}
             highlight={hasShortfall}
           />
           <Metric
             label="Certificates needed (kg)"
-            value={formatNumber(result.shortfallKg)}
+            value={formatNumber(shortfallKg)}
             highlight={hasShortfall}
             large
           />
         </div>
       </Card>
+
+      {/* Other Schedule II obligations — informational, not folded into the shortfall above */}
+      {(result.recyclingRefurbishmentObligation || result.carryForwardCapPercent != null) && (
+        <div className="flex gap-2 rounded-md bg-black/5 px-4 py-3">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#444441]/50" />
+          <div className="text-xs text-[#444441]/70 leading-relaxed space-y-1">
+            {result.recyclingRefurbishmentObligation && (
+              <p>{result.recyclingRefurbishmentObligation.note}</p>
+            )}
+            {result.carryForwardBasisNote && <p>{result.carryForwardBasisNote}</p>}
+          </div>
+        </div>
+      )}
+
+      {result.recycledContentObligation && (
+        <RecycledContentSection obligation={result.recycledContentObligation} />
+      )}
 
       {/* Call to action — only one accent element per screen per design rules */}
       {hasShortfall && (
@@ -62,7 +125,7 @@ export function CalculatorResult({ result }: Props) {
               </p>
               <p className="mt-1 text-sm text-[#444441]/70">
                 You need{" "}
-                <strong>{formatNumber(result.shortfallKg)} kg</strong> of certificates.
+                <strong>{formatNumber(shortfallKg)} kg</strong> of certificates.
                 Verify the recycler before committing to this volume.
               </p>
             </div>
@@ -135,6 +198,32 @@ function EcExposureSection({ ec }: { ec: EcExposureBreakdown }) {
         ))}
       </div>
       <p className="mt-3 text-[10px] text-[#444441]/40 leading-relaxed">{ec.caveat}</p>
+    </Card>
+  );
+}
+
+// Rule 4(14) minimum recycled-material-content — informational only, separate obligation from
+// the collection-target shortfall above (different quantity base: manufactured, not collected).
+function RecycledContentSection({ obligation }: { obligation: RecycledContentObligation }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Minimum recycled-content requirement</CardTitle>
+        <p className="text-xs text-[#444441]/60 mt-1">
+          {obligation.applicableNow
+            ? `In effect from FY ${obligation.startsFinancialYear}.`
+            : `Not yet in effect — starts FY ${obligation.startsFinancialYear}.`}
+        </p>
+      </CardHeader>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {obligation.ramp.map((r) => (
+          <div key={r.financialYear} className="rounded-lg bg-[#F1EFE8] px-3 py-3">
+            <p className="text-[10px] text-[#444441]/50 leading-tight">FY {r.financialYear}</p>
+            <p className="text-sm font-bold text-[#444441]">{r.minimumPercent}%</p>
+          </div>
+        ))}
+      </div>
+      <p className="mt-3 text-[10px] text-[#444441]/40 leading-relaxed">{obligation.note}</p>
     </Card>
   );
 }

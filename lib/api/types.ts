@@ -1,12 +1,25 @@
 // ─── Calculator ──────────────────────────────────────────────────────────────
+// BatteryCategory is a 7-way split (was 4) — Schedule II (BWMR 2022) tracks these separately:
+// different plateau years, cycle-start years, and EV_FOUR_WHEELER alone runs a 14-year (not
+// 7-year) cycle. See backend RecoveryTargets.kt / BatteryCategory.kt for the sourced ramp.
 
-export type BatteryCategory = "PORTABLE" | "AUTOMOTIVE" | "INDUSTRIAL" | "ELECTRIC_VEHICLE";
+export type BatteryCategory =
+  | "PORTABLE_RECHARGEABLE"
+  | "PORTABLE_NON_RECHARGEABLE"
+  | "AUTOMOTIVE"
+  | "INDUSTRIAL"
+  | "EV_THREE_WHEELER"
+  | "EV_TWO_WHEELER"
+  | "EV_FOUR_WHEELER";
 
 export const BATTERY_CATEGORY_LABELS: Record<BatteryCategory, string> = {
-  PORTABLE: "Portable",
+  PORTABLE_RECHARGEABLE: "Portable — Rechargeable",
+  PORTABLE_NON_RECHARGEABLE: "Portable — Non-rechargeable",
   AUTOMOTIVE: "Automotive",
   INDUSTRIAL: "Industrial",
-  ELECTRIC_VEHICLE: "Electric Vehicle (EV)",
+  EV_THREE_WHEELER: "EV — Three-wheeler",
+  EV_TWO_WHEELER: "EV — Two-wheeler",
+  EV_FOUR_WHEELER: "EV — Four-wheeler",
 };
 
 export const FINANCIAL_YEARS = ["2024-25", "2025-26", "2026-27"] as const;
@@ -34,16 +47,59 @@ export interface EcExposureBreakdown {
   caveat: string;
 }
 
+// Schedule II's separate always-100%-by-cycle-end refurbish/recycle obligation — informational,
+// not folded into shortfallTonnes.
+export interface RecyclingObligation {
+  percent: number;
+  cycleYears: number;
+  note: string;
+}
+
+export interface RecycledContentRampEntry {
+  financialYear: string;
+  minimumPercent: number;
+}
+
+// Rule 4(14) minimum recycled-material-content — a manufacturing-input obligation, different
+// quantity base (dry weight manufactured, not collected/placed). Informational only; never
+// applies to any FY this calculator currently supports (starts FY2027-28).
+export interface RecycledContentObligation {
+  startsFinancialYear: string;
+  applicableNow: boolean;
+  ramp: RecycledContentRampEntry[];
+  note: string;
+}
+
 export interface ComplianceEstimateResponse {
-  estimateId: string;
+  /** Null when applicable is false — nothing is persisted for a not-yet-applicable category/FY. */
+  estimateId: string | null;
   batteryCategory: BatteryCategory;
   financialYear: FinancialYear;
   quantityPlacedTonnes: number;
   quantityAlreadyFulfilledTonnes: number;
-  recoveryTargetPercent: number;
-  targetTonnes: number;
-  shortfallTonnes: number;
-  shortfallKg: number;
+
+  /** False when this category's Schedule II collection-target cycle hasn't started yet as of
+   *  financialYear (e.g. EV four-wheeler doesn't apply to any FY this app currently supports).
+   *  When false, every field below except notApplicableReason/recycledContentObligation is null. */
+  applicable: boolean;
+  notApplicableReason: string | null;
+
+  recoveryTargetPercent: number | null;
+  /** The FY whose "quantity placed in market" Schedule II's % nominally applies to — not the FY
+   *  requested; the calculator uses the requested FY's quantity as a same-year proxy. */
+  referenceFinancialYear: string | null;
+  targetTonnes: number | null;
+  shortfallTonnes: number | null;
+  shortfallKg: number | null;
+
+  /** Length of this category's compliance cycle (7/10/14 years). */
+  complianceCycleYears: number | null;
+  recyclingRefurbishmentObligation: RecyclingObligation | null;
+  carryForwardCapPercent: number | null;
+  carryForwardBasisNote: string | null;
+
+  recycledContentObligation: RecycledContentObligation | null;
+
   ecExposure: EcExposureBreakdown | null;
   disclaimer: string;
   callToAction: CallToAction;
