@@ -593,6 +593,7 @@ export interface CpcbRecyclerSearchResult {
   dataQualityPartialCapture: boolean;
   dataQualityNotes: string | null;
   latestScore: CpcbRecyclerScoreDto | null;
+  lastSyncedAt: string | null;
 }
 
 export interface CpcbIngestionSummaryDto {
@@ -601,4 +602,33 @@ export interface CpcbIngestionSummaryDto {
   rowsFlaggedPartialCapture: number;
   rowsMissingSourceId: number;
   errors: string[];
+}
+
+export type RefreshRunStatus = "RUNNING" | "SUCCESS" | "PARTIAL" | "FAILED";
+
+export interface CpcbRefreshRunSummaryDto {
+  id: string;
+  startedAt: string;
+  completedAt: string | null;
+  recordsFetched: number;
+  recordsChanged: number;
+  recordsNew: number;
+  recordsMissing: number;
+  status: RefreshRunStatus;
+  errorDetail: string | null;
+}
+
+export interface CpcbRecyclerSnapshotDiffDto {
+  fieldName: string;
+  oldValue: string | null;
+  newValue: string | null;
+  detectedAt: string;
+}
+
+export interface CpcbPendingReviewItemDto {
+  id: string;
+  cpcbId: string | null;
+  recyclerName: string;
+  latestScore: CpcbRecyclerScoreDto | null;
+  recentDiffs: CpcbRecyclerSnapshotDiffDto[];
 }

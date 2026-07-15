@@ -76,6 +76,11 @@ export function Navbar() {
               {t("cpcbDirectory")}
             </Link>
           )}
+          {user?.role === "ADMIN" && (
+            <Link href="/admin/cpcb-review" className="opacity-90 hover:opacity-100 font-medium">
+              CPCB Review
+            </Link>
+          )}
 
           {languageSelect}
 
@@ -146,6 +151,11 @@ export function Navbar() {
           {user?.role !== "RECYCLER" && (
             <Link href="/cpcb-directory" onClick={() => setMenuOpen(false)} className="opacity-90 hover:opacity-100 font-medium">
               {t("cpcbDirectory")}
+            </Link>
+          )}
+          {user?.role === "ADMIN" && (
+            <Link href="/admin/cpcb-review" onClick={() => setMenuOpen(false)} className="opacity-90 hover:opacity-100 font-medium">
+              CPCB Review
             </Link>
           )}
 

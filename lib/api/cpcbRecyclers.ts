@@ -1,5 +1,11 @@
 import { apiFetch } from "./client";
-import type { CpcbIngestionSummaryDto, CpcbRecyclerSearchResult, CpcbStateDto } from "./types";
+import type {
+  CpcbIngestionSummaryDto,
+  CpcbPendingReviewItemDto,
+  CpcbRecyclerSearchResult,
+  CpcbRefreshRunSummaryDto,
+  CpcbStateDto,
+} from "./types";
 
 export interface CpcbRecyclerSearchParams {
   name?: string;
@@ -32,3 +38,19 @@ export const ingestCpcbRecyclerCsv = (file: File, token: string) => {
     token
   );
 };
+
+export const triggerCpcbRefresh = (token: string) =>
+  apiFetch<CpcbRefreshRunSummaryDto>("/api/v1/cpcb-recyclers/refresh", { method: "POST" }, token);
+
+export const listCpcbRefreshRuns = (token: string) =>
+  apiFetch<CpcbRefreshRunSummaryDto[]>("/api/v1/cpcb-recyclers/refresh-runs", {}, token);
+
+export const listCpcbPendingReview = (token: string) =>
+  apiFetch<CpcbPendingReviewItemDto[]>("/api/v1/cpcb-recyclers/pending-review", {}, token);
+
+export const confirmCpcbReview = (recyclerId: string, token: string) =>
+  apiFetch<{ confirmed: boolean }>(
+    `/api/v1/cpcb-recyclers/${recyclerId}/confirm-review`,
+    { method: "POST" },
+    token
+  );
