@@ -311,6 +311,7 @@
     "heading": "Composite risk score",
     "notYetComputed": "Composite score not yet available for this check.",
     "hardDisqualified": "Hard-disqualified",
+    "disclaimer": "This is a signal derived from available public/regulatory data, not a legal finding or a verdict on the recycler. Risk weighting is a first-draft model, not yet calibrated. Treat every finding as worth checking, not as a proven fact.",
     "breakdownHeading": "Score breakdown by signal",
     "bandPending": "Pending",
     "band": {

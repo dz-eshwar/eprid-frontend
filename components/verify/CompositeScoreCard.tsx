@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertOctagon } from "lucide-react";
+import { AlertOctagon, Info } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
@@ -48,6 +48,11 @@ export function CompositeScoreCard({
         <span className={cn("inline-flex px-3 py-1 rounded-full text-xs font-semibold self-start", bg, text)}>
           {riskRating ? t(`band.${riskRating}`) : t("bandPending")}
         </span>
+      </div>
+
+      <div className="mt-3 flex gap-2 rounded-md bg-black/5 px-4 py-3">
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#444441]/50" />
+        <p className="text-xs text-[#444441]/60 leading-relaxed">{t("disclaimer")}</p>
       </div>
 
       {hardDisqualified && (
