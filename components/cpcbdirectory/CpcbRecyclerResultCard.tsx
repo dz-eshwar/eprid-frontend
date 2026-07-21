@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AlertTriangle, ChevronDown, ChevronUp, MapPin } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Card } from "@/components/ui/Card";
 import { RiskPill } from "@/components/verify/RiskPill";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ interface Props {
 
 export function CpcbRecyclerResultCard({ result }: Props) {
   const t = useTranslations("cpcbDirectory");
+  const locale = useLocale();
   const [expanded, setExpanded] = useState(false);
   const score = result.latestScore;
 
@@ -76,6 +77,17 @@ export function CpcbRecyclerResultCard({ result }: Props) {
               : <ChevronDown className="h-4 w-4 text-[#444441]/40" />}
           </button>
           <p className="text-[10px] text-[#444441]/40 mt-0.5">{t("scoreDirectionNote")}</p>
+          {result.lastSyncedAt && (
+            <p className="text-[10px] text-[#444441]/40">
+              {t("dataAsOf", {
+                date: new Date(result.lastSyncedAt).toLocaleDateString(`${locale}-IN`, {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                }),
+              })}
+            </p>
+          )}
 
           {expanded && (
             <div className="mt-3 space-y-3 border-t border-black/5 pt-3">

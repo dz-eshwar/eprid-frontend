@@ -10,6 +10,7 @@
       "forProducers": "For Producers",
       "forConsultancies": "For Consultancies",
       "usedOil": "Used-Oil Registration",
+      "roadmap": "Roadmap",
       "tryNow": "Try it now",
       "toggleMenu": "Toggle menu"
     },
@@ -17,7 +18,7 @@
       "badge": "Battery, Tyre & Used-Oil EPR",
       "titleLine1": "Know if your EPR certificate is real",
       "titleLine2": "before you file.",
-      "body": "India's plastic EPR system saw ₹700Cr+ in fraudulent certificates before anyone caught it. Battery and tyre EPR run the same certificate architecture. E-PRid gives producers, PROs, and compliance consultancies a risk score on every recycler and certificate before they buy — plus a guided registration assistant for used-oil collection agents navigating CPCB's sign-up process.",
+      "body": "India's plastic EPR system saw an estimated 600,000–700,000 fraudulent certificates surface before anyone caught it. Battery and tyre EPR run the same certificate architecture. E-PRid gives producers, PROs, and compliance consultancies a risk score on every recycler and certificate before they buy — plus a guided registration assistant for used-oil collection agents navigating CPCB's sign-up process.",
       "ctaPrimary": "Run a Risk Check",
       "ctaSecondary": "See how it works",
       "footnote": "Covering Battery, Tyre, and Used-Oil EPR under India's Hazardous & Other Waste Rules"
@@ -28,8 +29,8 @@
         "desc": "Registered battery recyclers — with no independent verification layer"
       },
       "fraud": {
-        "stat": "₹700Cr+",
-        "desc": "Fraudulent plastic EPR certs undetected. Battery and tyre EPR use the same architecture."
+        "stat": "600K–700K",
+        "desc": "Fraudulent plastic EPR certs that surfaced undetected. Battery and tyre EPR use the same architecture."
       },
       "deadline": {
         "stat": "June 30",
@@ -78,7 +79,7 @@
     "whoItsFor": {
       "heading": "Who it's for",
       "subheading": "Every participant in the EPR certificate chain has something at stake.",
-      "verifiedBadge": "Verified Recycler",
+      "verifiedBadge": "Verified Recycler — Coming Soon",
       "audiences": {
         "consultancies": {
           "title": "EPR Compliance Consultancies",
@@ -90,7 +91,57 @@
         },
         "recyclers": {
           "title": "Recyclers",
-          "body": "Stand out from the crowd. Get a Verified Recycler badge that producers can trust — because you've passed an independent check, not just self-reported."
+          "body": "Stand out from the crowd. We're building a Verified Recycler badge so producers can trust you've passed an independent check, not just self-reported — reach out if you'd like to join the pilot."
+        }
+      }
+    },
+    "nowNext": {
+      "heading": "What's real today",
+      "subheading": "We'd rather you know exactly what's live than find out the hard way. This section is kept current with what we've actually shipped.",
+      "nowLabel": "Available now",
+      "nextLabel": "Building next",
+      "now": {
+        "riskCheck": {
+          "title": "Recycler & Certificate Risk Check",
+          "desc": "Document forensics, capacity checks, invoice verification, and regulatory history — for battery and tyre recyclers."
+        },
+        "calculator": {
+          "title": "EPR Compliance Calculator",
+          "desc": "Estimate your Schedule II shortfall and Environmental Compensation exposure."
+        },
+        "directory": {
+          "title": "Free Recycler Directory",
+          "desc": "Search CPCB's own recycler registry with a built-in Entity Risk Score, at no cost."
+        },
+        "vault": {
+          "title": "Recycler Document Vault",
+          "desc": "A private place for recyclers to store registration, GST, and processing records."
+        },
+        "usedOil": {
+          "title": "Used-Oil Registration Assistant",
+          "desc": "Step-by-step guidance through CPCB's CA-1/CA-2 collection-agent sign-up."
+        },
+        "tyreCheck": {
+          "title": "Tyre / TPO Risk Check",
+          "desc": "The same independent risk check, applied to tyre recyclers and their TPO output."
+        }
+      },
+      "next": {
+        "formChecklist": {
+          "title": "Form 4 Filing Checklist",
+          "desc": "Connecting your stored documents to your quarterly filing — before any auto-drafting."
+        },
+        "verifiedBadge": {
+          "title": "Verified Recycler Badge",
+          "desc": "Earned after an independent check, once piloted with real recycler partners."
+        },
+        "invoiceChecks": {
+          "title": "Deeper Invoice-Fraud Checks",
+          "desc": "Tampering forensics and GST return cross-checks, beyond QR/IRN verification."
+        },
+        "tyreExpansion": {
+          "title": "Full Tyre EPR Coverage",
+          "desc": "Geographic risk hotspots and EC exposure for tyre, matching battery."
         }
       }
     },
@@ -104,6 +155,7 @@
       "subtitle": "Covering Battery, Tyre & Used-Oil EPR compliance in India",
       "privacyPolicy": "Privacy Policy",
       "termsOfService": "Terms of Service",
+      "roadmap": "Roadmap",
       "login": "Log in"
     }
   },
@@ -114,6 +166,7 @@
     "vault": "Vault",
     "usedOil": "Used Oil",
     "cpcbDirectory": "Recycler Directory",
+    "roadmap": "Roadmap",
     "dashboard": "Dashboard",
     "login": "Log in",
     "signup": "Sign up",
@@ -227,6 +280,7 @@
     "riskLevelLabel": "Entity Risk Level:",
     "compositeScore": "Entity Risk Score: {score} / 100",
     "scoreDirectionNote": "Higher the score, higher the risk.",
+    "dataAsOf": "Registration data as of {date} — a snapshot, not a live feed. Flags below describe what CPCB's own portal shows, not an independent finding.",
     "flags": "Flags",
     "unassessed": "Not assessed (missing data)",
     "noIssues": "No flags — all available signals check out.",

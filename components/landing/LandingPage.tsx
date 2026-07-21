@@ -17,6 +17,7 @@ import {
   X,
   Battery,
   Droplet,
+  Clock,
 } from "lucide-react";
 import { EPRidMark } from "@/components/branding/EPRidLogo";
 
@@ -77,6 +78,9 @@ function LandingNavbar() {
           <Link href="/used-oil" className="hover:text-[#0F6E56] transition-colors">
             {t("usedOil")}
           </Link>
+          <a href="#now-and-next" className="hover:text-[#0F6E56] transition-colors">
+            {t("roadmap")}
+          </a>
           <Link
             href="/register"
             className="bg-[#D85A30] text-white px-4 py-2 rounded-md hover:opacity-90 transition-opacity font-semibold"
@@ -114,6 +118,9 @@ function LandingNavbar() {
           <Link href="/used-oil" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
             {t("usedOil")}
           </Link>
+          <a href="#now-and-next" onClick={() => setMenuOpen(false)} className="hover:text-[#0F6E56]">
+            {t("roadmap")}
+          </a>
           <Link
             href="/register"
             onClick={() => setMenuOpen(false)}
@@ -295,10 +302,13 @@ function HowItWorksSection() {
 function VerifiedBadge() {
   const t = useTranslations("landing.whoItsFor");
   return (
-    <span className="inline-flex items-center gap-1.5 bg-[#7C3AED]/10 text-[#7C3AED] text-xs font-semibold px-3 py-1.5 rounded-full border border-[#7C3AED]/20">
+    <a
+      href="#now-and-next"
+      className="inline-flex items-center gap-1.5 bg-[#7C3AED]/10 text-[#7C3AED] text-xs font-semibold px-3 py-1.5 rounded-full border border-[#7C3AED]/20 hover:bg-[#7C3AED]/15 transition-colors"
+    >
       <CheckCircle2 className="h-3.5 w-3.5" />
       {t("verifiedBadge")}
-    </span>
+    </a>
   );
 }
 
@@ -343,6 +353,74 @@ function WhoItsForSection() {
   );
 }
 
+// ─── Now / Next ───────────────────────────────────────────────────────────────
+
+const NOW_KEYS = ["riskCheck", "calculator", "directory", "vault", "usedOil", "tyreCheck"] as const;
+const NEXT_KEYS = ["formChecklist", "verifiedBadge", "invoiceChecks", "tyreExpansion"] as const;
+
+function NowNextSection() {
+  const t = useTranslations("landing.nowNext");
+
+  return (
+    <section id="now-and-next" className="bg-[#F9FAFB] py-20 border-t border-black/5">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-[#374151] mb-3">{t("heading")}</h2>
+          <p className="text-[#374151]/55 max-w-xl mx-auto text-sm leading-relaxed">
+            {t("subheading")}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <p className="text-xs font-semibold text-[#0F6E56] uppercase tracking-wide mb-4">
+              {t("nowLabel")}
+            </p>
+            <ul className="space-y-4">
+              {NOW_KEYS.map((key) => (
+                <li
+                  key={key}
+                  className="flex items-start gap-3 rounded-lg bg-white border border-black/5 p-4"
+                >
+                  <CheckCircle2 className="h-4 w-4 text-[#0F6E56] shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-[#374151]">{t(`now.${key}.title`)}</p>
+                    <p className="text-xs text-[#374151]/55 mt-0.5 leading-relaxed">
+                      {t(`now.${key}.desc`)}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold text-[#374151]/50 uppercase tracking-wide mb-4">
+              {t("nextLabel")}
+            </p>
+            <ul className="space-y-4">
+              {NEXT_KEYS.map((key) => (
+                <li
+                  key={key}
+                  className="flex items-start gap-3 rounded-lg bg-white/60 border border-dashed border-black/10 p-4"
+                >
+                  <Clock className="h-4 w-4 text-[#374151]/35 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-[#374151]/70">{t(`next.${key}.title`)}</p>
+                    <p className="text-xs text-[#374151]/45 mt-0.5 leading-relaxed">
+                      {t(`next.${key}.desc`)}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── Get started ──────────────────────────────────────────────────────────────
 
 function GetStartedSection() {
@@ -381,6 +459,9 @@ function Footer() {
           </p>
         </div>
         <div className="flex items-center gap-6 text-sm text-[#374151]/50">
+          <a href="#now-and-next" className="hover:text-[#374151] transition-colors">
+            {t("roadmap")}
+          </a>
           <Link href="/privacy" className="hover:text-[#374151] transition-colors">
             {t("privacyPolicy")}
           </Link>
@@ -407,6 +488,7 @@ export function LandingPage() {
       <StreamsSection />
       <HowItWorksSection />
       <WhoItsForSection />
+      <NowNextSection />
       <GetStartedSection />
       <Footer />
     </div>

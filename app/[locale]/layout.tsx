@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import "../globals.css";
 import { NavbarWrapper } from "@/components/layout/NavbarWrapper";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { routing } from "@/i18n/routing";
 
@@ -36,6 +37,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={inter.className}>
       <body>
+        <GoogleAnalytics />
         <NextIntlClientProvider>
           <AuthProvider>
             <NavbarWrapper />
